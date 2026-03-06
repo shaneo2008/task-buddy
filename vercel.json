@@ -1,5 +1,5 @@
 {
-  "buildCommand": "npx vite build",
+  "buildCommand": "cd client && node ../node_modules/.bin/vite build",
   "outputDirectory": "dist/public",
   "installCommand": "pnpm install --no-frozen-lockfile --ignore-scripts=false",
   "rewrites": [
