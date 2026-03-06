@@ -1,6 +1,6 @@
 {
   "buildCommand": "pnpm run build:client",
-  "outputDirectory": "client/dist",
+  "outputDirectory": "public",
   "installCommand": "pnpm install --no-frozen-lockfile --ignore-scripts=false",
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
