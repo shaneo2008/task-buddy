@@ -1,0 +1,597 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --font-sans: 'Nunito', sans-serif;
+  --font-display: 'Fredoka', sans-serif;
+  --color-rex-green: oklch(0.72 0.17 140);
+  --color-rex-dark: oklch(0.45 0.12 145);
+  --color-rex-belly: oklch(0.88 0.08 85);
+  --color-coral: oklch(0.68 0.19 25);
+  --color-coral-light: oklch(0.82 0.12 25);
+  --color-mint: oklch(0.82 0.1 165);
+  --color-amber: oklch(0.8 0.15 75);
+  --color-amber-light: oklch(0.9 0.08 80);
+  --color-cream: oklch(0.97 0.02 85);
+  --color-cream-dark: oklch(0.92 0.03 80);
+}
+
+:root {
+  --radius: 1rem;
+  --background: oklch(0.98 0.015 85);
+  --foreground: oklch(0.25 0.03 55);
+  --card: oklch(1 0 0 / 85%);
+  --card-foreground: oklch(0.25 0.03 55);
+  --popover: oklch(0.99 0.005 85);
+  --popover-foreground: oklch(0.25 0.03 55);
+  --primary: oklch(0.72 0.17 140);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.95 0.02 85);
+  --secondary-foreground: oklch(0.35 0.03 55);
+  --muted: oklch(0.94 0.015 85);
+  --muted-foreground: oklch(0.5 0.02 55);
+  --accent: oklch(0.68 0.19 25);
+  --accent-foreground: oklch(1 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.985 0 0);
+  --border: oklch(0.9 0.025 80);
+  --input: oklch(0.92 0.02 80);
+  --ring: oklch(0.72 0.17 140);
+  --chart-1: oklch(0.72 0.17 140);
+  --chart-2: oklch(0.68 0.19 25);
+  --chart-3: oklch(0.8 0.15 75);
+  --chart-4: oklch(0.82 0.1 165);
+  --chart-5: oklch(0.65 0.12 280);
+  --sidebar: oklch(0.97 0.02 85);
+  --sidebar-foreground: oklch(0.25 0.03 55);
+  --sidebar-primary: oklch(0.72 0.17 140);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.94 0.015 85);
+  --sidebar-accent-foreground: oklch(0.25 0.03 55);
+  --sidebar-border: oklch(0.9 0.025 80);
+  --sidebar-ring: oklch(0.72 0.17 140);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Nunito', sans-serif;
+    background-color: #FFF9EE;
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23e8dcc8' fill-opacity='0.15'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  [type="button"]:not(:disabled),
+  [type="submit"]:not(:disabled),
+  [type="reset"]:not(:disabled),
+  a[href],
+  select:not(:disabled),
+  input[type="checkbox"]:not(:disabled),
+  input[type="radio"]:not(:disabled) {
+    @apply cursor-pointer;
+  }
+}
+
+@layer components {
+  .container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .flex {
+    min-height: 0;
+    min-width: 0;
+  }
+
+  @media (min-width: 640px) {
+    .container {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .container {
+      padding-left: 2rem;
+      padding-right: 2rem;
+      max-width: 480px;
+    }
+  }
+
+  .glass-card {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    border: 1.5px solid rgba(232, 220, 200, 0.6);
+    border-radius: 1.25rem;
+    box-shadow: 0 4px 20px rgba(139, 109, 78, 0.08);
+  }
+
+  .glass-card-solid {
+    background: rgba(255, 255, 255, 0.95);
+    border: 1.5px solid rgba(232, 220, 200, 0.6);
+    border-radius: 1.25rem;
+    box-shadow: 0 4px 20px rgba(139, 109, 78, 0.08);
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #7BC74D 0%, #5BA832 100%);
+    color: white;
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 600;
+    border-radius: 1rem;
+    padding: 0.875rem 2rem;
+    font-size: 1.125rem;
+    box-shadow: 0 4px 14px rgba(123, 199, 77, 0.35);
+    transition: all 0.2s ease;
+    border: none;
+    min-height: 56px;
+  }
+
+  .btn-primary:hover:not(:disabled) {
+    transform: scale(1.03);
+    box-shadow: 0 6px 20px rgba(123, 199, 77, 0.45);
+  }
+
+  .btn-primary:active:not(:disabled) {
+    transform: scale(0.97);
+  }
+
+  .btn-primary:disabled {
+    opacity: 0.5;
+  }
+
+  .btn-coral {
+    background: linear-gradient(135deg, #FF6B6B 0%, #ee5a5a 100%);
+    color: white;
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 600;
+    border-radius: 1rem;
+    padding: 0.875rem 2rem;
+    font-size: 1.125rem;
+    box-shadow: 0 4px 14px rgba(255, 107, 107, 0.35);
+    transition: all 0.2s ease;
+    border: none;
+    min-height: 56px;
+  }
+
+  .btn-coral:hover:not(:disabled) {
+    transform: scale(1.03);
+    box-shadow: 0 6px 20px rgba(255, 107, 107, 0.45);
+  }
+
+  .btn-coral:active:not(:disabled) {
+    transform: scale(0.97);
+  }
+
+  .btn-done-early {
+    background: linear-gradient(135deg, #7BC74D 0%, #5BA832 100%);
+    color: white;
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 600;
+    border-radius: 1rem;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    box-shadow: 0 4px 14px rgba(123, 199, 77, 0.3);
+    transition: all 0.2s ease;
+    border: 2px dashed rgba(255, 255, 255, 0.5);
+    min-height: 48px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-done-early::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+    animation: btn-shimmer 2.5s ease-in-out infinite;
+  }
+
+  .btn-done-early:hover:not(:disabled) {
+    transform: scale(1.03);
+    box-shadow: 0 6px 20px rgba(123, 199, 77, 0.45);
+  }
+
+  .btn-done-early:active:not(:disabled) {
+    transform: scale(0.97);
+  }
+}
+
+/* =========================================
+   REX SVG ANIMATION SYSTEM
+   All animations target <g> groups inside the inline SVG.
+   Classes are toggled by RexCharacter.tsx based on rexState.
+========================================= */
+
+/* =========================================
+   LOTTIE CHARACTER — CSS OVERLAYS
+   These classes add physics-based CSS effects
+   on top of the Lottie animation playback.
+========================================= */
+
+.rex-lottie-wrapper {
+  transform-origin: bottom center;
+  transition: transform 0.3s ease;
+}
+
+/* Idle: subtle gentle breathing scale */
+@keyframes lottie-idle-breathe {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.02); }
+}
+
+.rex-lottie-idle {
+  animation: lottie-idle-breathe 3s ease-in-out infinite;
+}
+
+/* Hungry: side-to-side shake with urgency */
+@keyframes lottie-hungry-shake {
+  0%, 100% { transform: translateX(0) rotate(0deg); }
+  20%      { transform: translateX(-5px) rotate(-3deg); }
+  40%      { transform: translateX(5px) rotate(3deg); }
+  60%      { transform: translateX(-4px) rotate(-2deg); }
+  80%      { transform: translateX(4px) rotate(2deg); }
+}
+
+.rex-lottie-hungry {
+  animation: lottie-hungry-shake 0.6s ease-in-out infinite;
+}
+
+/* Chomp: squash-stretch belly bounce (reuses existing keyframe) */
+.rex-lottie-chomp {
+  animation: squash-stretch 0.5s ease-out forwards;
+}
+
+/* Celebrating: bouncy pulse */
+@keyframes lottie-celebrate-bounce {
+  0%, 100% { transform: translateY(0) scale(1); }
+  25%      { transform: translateY(-12px) scale(1.05); }
+  50%      { transform: translateY(0) scale(0.97); }
+  75%      { transform: translateY(-6px) scale(1.02); }
+}
+
+.rex-lottie-celebrating {
+  animation: lottie-celebrate-bounce 1s ease-in-out infinite;
+}
+
+/* =========================================
+   STATE 1: IDLE (Breathing & Blinking)
+========================================= */
+
+/* The Breathing Keyframe */
+@keyframes breathe {
+  0%   { transform: scaleY(1); }
+  50%  { transform: scaleY(1.04); } /* Subtle expansion */
+  100% { transform: scaleY(1); }
+}
+
+/* Apply to the Torso/Body SVG Group */
+.rex-idle-torso {
+  /* CRITICAL: Origin must be bottom center so he breathes 'up', not outward */
+  transform-origin: bottom center;
+  animation: breathe 3.5s ease-in-out infinite;
+}
+
+/* The Blinking Keyframe */
+@keyframes blink {
+  0%, 96%, 98%, 100% { transform: scaleY(1); }
+  97%, 99% { transform: scaleY(0.1); } /* Quick double blink */
+}
+
+/* Apply to the Eyes SVG Group */
+.rex-idle-eyes {
+  transform-origin: center;
+  animation: blink 6s linear infinite;
+}
+
+/* Idle tail gentle sway */
+@keyframes idle-tail-sway {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(8deg); }
+  75% { transform: rotate(-8deg); }
+}
+
+.rex-idle-tail {
+  transform-origin: 65% 70%;
+  animation: idle-tail-sway 2.5s ease-in-out infinite;
+}
+
+/* =========================================
+   STATE 2: HUNGRY / IMPATIENT (Timer = 0:00)
+========================================= */
+
+/* Hungry body shift */
+@keyframes hungry-shift {
+  0%, 100% { transform: translateX(0) rotate(0deg); }
+  25% { transform: translateX(-6px) rotate(-2deg); }
+  75% { transform: translateX(6px) rotate(2deg); }
+}
+
+.rex-hungry-torso {
+  transform-origin: bottom center;
+  animation: hungry-shift 0.8s ease-in-out infinite;
+}
+
+/* Hungry eyes — bigger, looking around */
+@keyframes hungry-eyes {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+
+.rex-hungry-eyes {
+  transform-origin: center;
+  animation: hungry-eyes 1.2s ease-in-out infinite;
+}
+
+/* Hungry tail — fast wag */
+@keyframes hungry-tail-wag {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(15deg); }
+  75% { transform: rotate(-15deg); }
+}
+
+.rex-hungry-tail {
+  transform-origin: 65% 70%;
+  animation: hungry-tail-wag 0.6s ease-in-out infinite;
+}
+
+/* Hungry arms — reaching */
+@keyframes hungry-arms-reach {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(-10deg); }
+}
+
+.rex-hungry-arms .rex-arm-left {
+  transform-origin: 55px 130px;
+  animation: hungry-arms-reach 0.6s ease-in-out infinite;
+}
+
+.rex-hungry-arms .rex-arm-right {
+  transform-origin: 125px 130px;
+  animation: hungry-arms-reach 0.6s ease-in-out infinite reverse;
+}
+
+/* The Progress Ring Pulse Keyframe */
+@keyframes pulse-ring {
+  0%   { transform: scale(1); opacity: 1; }
+  50%  { transform: scale(1.05); opacity: 0.7; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Apply to the outer SVG <circle> of the progress ring */
+.ring-impatient {
+  transform-origin: center;
+  animation: pulse-ring 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  /* Change stroke color to a 'warning' / 'action' color */
+  stroke: #FF9800;
+  transition: stroke 0.3s ease;
+}
+
+/* =========================================
+   STATE 3: EATING — Orchestrated Timeline
+   T=0ms:    Item flies to mouth (spring curve)
+   T=400ms:  Jaw opens (anticipation)
+   T=600ms:  Item eaten, jaw snaps, particles + squash-stretch
+   T=1400ms: Pause (reward processing)
+   T=1500ms: Next task, reset to idle
+========================================= */
+
+/* --- Jaw Anticipation: opens before the chomp --- */
+@keyframes jaw-anticipate {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(25deg); }
+}
+
+.rex-jaw-open {
+  transform-origin: 70px 112px;
+  animation: jaw-anticipate 0.2s ease-out forwards;
+}
+
+/* --- Jaw Snap: closes after eating --- */
+@keyframes jaw-snap {
+  0%   { transform: rotate(25deg); }
+  40%  { transform: rotate(-3deg); } /* Overshoot past closed */
+  100% { transform: rotate(0deg); }
+}
+
+.rex-jaw-snap {
+  transform-origin: 70px 112px;
+  animation: jaw-snap 0.15s ease-in forwards;
+}
+
+/* --- The Satisfied Belly Bounce (Squash-Stretch) --- */
+@keyframes squash-stretch {
+  0%   { transform: scale(1, 1); }
+  25%  { transform: scale(1.08, 0.92); } /* Squash down */
+  50%  { transform: scale(0.95, 1.05); } /* Stretch up */
+  75%  { transform: scale(1.02, 0.98); } /* Settle */
+  100% { transform: scale(1, 1); }
+}
+
+.rex-swallow-bounce {
+  transform-origin: bottom center;
+  animation: squash-stretch 0.5s ease-out forwards;
+}
+
+/* --- Cheek Bulge (triggered at chomp) --- */
+@keyframes cheek-bulge {
+  0%   { transform: scaleX(1); }
+  30%  { transform: scaleX(1.2); }
+  70%  { transform: scaleX(1.15); }
+  100% { transform: scaleX(1); }
+}
+
+.rex-eating-cheeks {
+  transform-origin: center;
+  animation: cheek-bulge 0.5s ease-out forwards;
+}
+
+/* --- The Particle Burst --- */
+@keyframes explode-out {
+  0% {
+    transform: translate(0, 0) scale(0) rotate(0deg);
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    /* Uses CSS variables passed inline for random directions */
+    transform: translate(var(--tx), var(--ty)) scale(1.5) rotate(var(--rot));
+    opacity: 0;
+  }
+}
+
+.particle {
+  transform-origin: center;
+  animation: explode-out 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* --- Item flight path (spring curve via CSS transition) --- */
+.item-fly-to-mouth {
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.1s ease;
+}
+
+/* Legacy eating torso — kept for backwards compat, replaced by rex-swallow-bounce */
+.rex-eating-torso {
+  transform-origin: bottom center;
+}
+
+/* =========================================
+   STATE 4: CELEBRATING
+========================================= */
+
+@keyframes celebration-jump {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  20% { transform: translateY(-30px) rotate(-5deg); }
+  40% { transform: translateY(-50px) rotate(5deg); }
+  60% { transform: translateY(-30px) rotate(-3deg); }
+  80% { transform: translateY(-10px) rotate(2deg); }
+}
+
+.rex-celebrating-torso {
+  transform-origin: bottom center;
+  animation: celebration-jump 1.5s ease-out infinite;
+}
+
+@keyframes celebrating-tail-wag {
+  0%, 100% { transform: rotate(0deg); }
+  20% { transform: rotate(25deg); }
+  40% { transform: rotate(-25deg); }
+  60% { transform: rotate(20deg); }
+  80% { transform: rotate(-20deg); }
+}
+
+.rex-celebrating-tail {
+  transform-origin: 65% 70%;
+  animation: celebrating-tail-wag 0.8s ease-in-out infinite;
+}
+
+@keyframes celebrating-arms-wave {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-20deg); }
+  75% { transform: rotate(20deg); }
+}
+
+.rex-celebrating-arms .rex-arm-left {
+  transform-origin: 55px 130px;
+  animation: celebrating-arms-wave 0.5s ease-in-out infinite;
+}
+
+.rex-celebrating-arms .rex-arm-right {
+  transform-origin: 125px 130px;
+  animation: celebrating-arms-wave 0.5s ease-in-out infinite reverse;
+}
+
+/* Star burst animations — staggered delays */
+@keyframes star-burst {
+  0% { transform: scale(0) rotate(0deg); opacity: 0; }
+  50% { transform: scale(1.3) rotate(180deg); opacity: 1; }
+  100% { transform: scale(0) rotate(360deg); opacity: 0; }
+}
+
+.rex-star {
+  animation: star-burst 1.5s ease-out infinite;
+}
+.rex-star-1 { animation-delay: 0s; }
+.rex-star-2 { animation-delay: 0.2s; }
+.rex-star-3 { animation-delay: 0.4s; }
+.rex-star-4 { animation-delay: 0.1s; }
+.rex-star-5 { animation-delay: 0.3s; }
+.rex-star-6 { animation-delay: 0.5s; }
+.rex-star-7 { animation-delay: 0.15s; }
+
+/* =========================================
+   SHARED UTILITY ANIMATIONS
+========================================= */
+
+@keyframes item-fly-to-mouth {
+  0% { transform: translate(0, 0) scale(1) rotate(0deg); opacity: 1; }
+  50% { transform: translate(-20px, -80px) scale(0.8) rotate(-15deg); opacity: 1; }
+  80% { transform: translate(-10px, -120px) scale(0.4) rotate(-30deg); opacity: 0.8; }
+  100% { transform: translate(0px, -140px) scale(0) rotate(-45deg); opacity: 0; }
+}
+
+@keyframes btn-shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes confetti-fall {
+  0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.4); }
+  50% { box-shadow: 0 0 0 12px rgba(255, 107, 107, 0); }
+}
+
+@keyframes float-up {
+  0% { transform: translateY(0) scale(1); opacity: 1; }
+  100% { transform: translateY(-60px) scale(0.5); opacity: 0; }
+}

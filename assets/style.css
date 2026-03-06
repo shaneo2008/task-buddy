@@ -1,0 +1,99 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    text-align: center;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+h1 {
+    color: #2d3748;
+    margin-bottom: 30px;
+    font-size: 2.5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.rex {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 30px;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+    will-change: transform;
+    transform: scale(4);
+    transform-origin: center;
+}
+
+.rex.idle {
+    background-image: url('rex-idle.png');
+    background-repeat: no-repeat;
+    animation: idle 0.6s steps(4) infinite;
+}
+
+.rex.chomp {
+    background-image: url('rex-chomp.png');
+    background-repeat: no-repeat;
+    animation: chomp 1.5s steps(6) forwards;
+}
+
+@keyframes idle {
+    from {
+        background-position: 0 0;
+    }
+    to {
+        background-position: -192px 0;
+    }
+}
+
+@keyframes chomp {
+    from {
+        background-position: 0 0;
+    }
+    to {
+        background-position: -288px 0;
+    }
+}
+
+.feed-btn {
+    background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(72, 187, 120, 0.4);
+}
+
+.feed-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(72, 187, 120, 0.6);
+}
+
+.feed-btn:active {
+    transform: translateY(0);
+}
+
+.feed-btn:disabled {
+    background: #a0aec0;
+    cursor: not-allowed;
+    box-shadow: none;
+}
