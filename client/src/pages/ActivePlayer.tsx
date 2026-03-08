@@ -61,6 +61,7 @@ export default function ActivePlayer() {
   const [isItemHidden, setIsItemHidden] = useState(false);
   const [showParticles, setShowParticles] = useState(false);
   const [isEatingSequence, setIsEatingSequence] = useState(false);
+  const [postChompCelebrating, setPostChompCelebrating] = useState(false);
   const timeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([]);
 
   // Clean up timeouts on unmount
@@ -77,6 +78,7 @@ export default function ActivePlayer() {
     setIsItemHidden(false);
     setShowParticles(false);
     setIsEatingSequence(false);
+    setPostChompCelebrating(false);
   }, [currentTaskIndex]);
 
   // Shared eating animation sequence
@@ -118,14 +120,15 @@ export default function ActivePlayer() {
       }, 600)
     );
 
-    // T = 1200ms: Hide particles
+    // T = 1200ms: Hide particles, switch to celebrating
     timeoutsRef.current.push(
       setTimeout(() => {
         setShowParticles(false);
+        setPostChompCelebrating(true);
       }, 1200)
     );
 
-    // T = 2000ms: Next task (after chomp animation fully plays — 1600ms)
+    // T = 3000ms: Next task — character has been celebrating for ~1.8s
     timeoutsRef.current.push(
       setTimeout(() => {
         console.log("[startEatingSequence] Timeout firing, calling onEatComplete");
@@ -133,8 +136,9 @@ export default function ActivePlayer() {
         setIsItemFlying(false);
         setIsItemHidden(false);
         setIsEatingSequence(false);
+        setPostChompCelebrating(false);
         onEatComplete();
-      }, 2000)
+      }, 3000)
     );
     console.log("[startEatingSequence] Sequence started, timeout set");
   }, [feedRex, onEatComplete]);
@@ -163,34 +167,6 @@ export default function ActivePlayer() {
 
   return (
     <div className="min-h-screen flex flex-col items-center px-4 pt-6 pb-8 relative overflow-hidden">
-      {/* Floating background decorations */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {[...Array(6)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute rounded-full opacity-20"
-            style={{
-              width: 20 + Math.random() * 40,
-              height: 20 + Math.random() * 40,
-              left: `${10 + Math.random() * 80}%`,
-              top: `${10 + Math.random() * 80}%`,
-              background: currentTask?.themeColor || "#7BC74D",
-            }}
-            animate={{
-              y: [0, -20, 0],
-              x: [0, 10, 0],
-              scale: [1, 1.2, 1],
-            }}
-            transition={{
-              duration: 4 + Math.random() * 3,
-              repeat: Infinity,
-              delay: Math.random() * 2,
-              ease: "easeInOut" as const,
-            }}
-          />
-        ))}
-      </div>
-
       {/* === Task Progress Dots === */}
       <div className="flex gap-2 mb-4 z-10">
         {tasks.map((task, i) => (
@@ -296,10 +272,10 @@ export default function ActivePlayer() {
         >
           {/* Pixel art character — centered inside the ring, above the timer */}
           <PixelRexCharacter
-            state={rexState}
+            state={postChompCelebrating ? "celebrating" : rexState}
             eatPhase={eatPhase}
             themeColor={currentTask?.themeColor}
-            size={120}
+            size={180}
             characterId={selectedCharacter}
           />
         </ProgressRing>

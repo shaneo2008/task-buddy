@@ -52,6 +52,9 @@ export default function RoutineComplete() {
   const [confetti, setConfetti] = useState<ConfettiPiece[]>([]);
   const [showContent, setShowContent] = useState(false);
 
+  // Get display name for selected character
+  const characterName = selectedCharacter.charAt(0).toUpperCase() + selectedCharacter.slice(1);
+
   useEffect(() => {
     setConfetti(generateConfetti(40));
     const timer = setTimeout(() => setShowContent(true), 600);
@@ -118,7 +121,7 @@ export default function RoutineComplete() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
           >
-            Rex is so happy! You completed all {tasks.length} tasks!
+            {characterName} is so happy! You completed all {tasks.length} tasks!
           </motion.p>
 
           {/* Rex celebrating */}
@@ -127,7 +130,7 @@ export default function RoutineComplete() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.3, type: "spring", stiffness: 200 }}
           >
-            <PixelRexCharacter state="celebrating" size={120} characterId={selectedCharacter} />
+            <PixelRexCharacter state="celebrating" size={180} characterId={selectedCharacter} />
           </motion.div>
 
           {/* Task summary */}
@@ -176,23 +179,10 @@ export default function RoutineComplete() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1 }}
           >
-            {/* Story Time button (future hook) */}
-            <motion.button
-              className="btn-primary w-full text-xl"
-              whileTap={{ scale: 0.95 }}
-              whileHover={{ scale: 1.02 }}
-              onClick={() => {
-                // Future: hook into story generation
-                alert("Story Time! 🌙 (Coming soon — this will trigger story generation)");
-              }}
-            >
-              📖 Story Time!
-            </motion.button>
-
             {/* Do it again */}
             <button
               onClick={resetRoutine}
-              className="glass-card py-3 font-display font-semibold text-sm text-muted-foreground hover:text-foreground transition-colors"
+              className="btn-primary w-full"
             >
               🔄 Do it again
             </button>

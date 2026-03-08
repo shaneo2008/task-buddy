@@ -2,7 +2,10 @@ import { useState, useCallback } from "react";
 import { motion, Reorder, AnimatePresence } from "framer-motion";
 import PixelRexCharacter from "@/components/rex/PixelRexCharacter";
 import { useRoutineStore, Task } from "@/stores/useRoutineStore";
-import { GripVertical, Minus, Plus, Play, Settings2 } from "lucide-react";
+import { GripVertical, Minus, Plus, Play, Settings2, Trash2, PlusCircle } from "lucide-react";
+import { nanoid } from "nanoid";
+
+const TASK_COLORS = ["#9B8FE8", "#5BC0EB", "#FFB347", "#FF6B6B", "#7BC74D", "#FF9FF3"];
 
 /*
  * RoutineSetup — Parent Builder Screen
@@ -18,6 +21,9 @@ import { GripVertical, Minus, Plus, Play, Settings2 } from "lucide-react";
 
 export default function RoutineSetup() {
   const { tasks, setTasks, startRoutine, routineName, selectedCharacter } = useRoutineStore();
+
+  // Get display name for selected character
+  const characterName = selectedCharacter.charAt(0).toUpperCase() + selectedCharacter.slice(1);
   const [showBuilder, setShowBuilder] = useState(false);
 
   const totalMinutes = tasks.reduce((sum, t) => sum + t.durationMinutes, 0);
@@ -27,10 +33,37 @@ export default function RoutineSetup() {
       setTasks(
         tasks.map((t) =>
           t.id === taskId
-            ? { ...t, durationMinutes: Math.max(1, Math.min(5, t.durationMinutes + delta)) }
+            ? { ...t, durationMinutes: Math.max(1, Math.min(60, t.durationMinutes + delta)) }
             : t
         )
       );
+    },
+    [tasks, setTasks]
+  );
+
+  const deleteTask = useCallback(
+    (taskId: string) => {
+      setTasks(tasks.filter((t) => t.id !== taskId));
+    },
+    [tasks, setTasks]
+  );
+
+  const addTask = useCallback(() => {
+    const color = TASK_COLORS[tasks.length % TASK_COLORS.length];
+    const newTask: Task = {
+      id: nanoid(),
+      title: "",
+      durationMinutes: 5,
+      itemEmoji: "⭐",
+      itemLabel: "Task",
+      themeColor: color,
+    };
+    setTasks([...tasks, newTask]);
+  }, [tasks, setTasks]);
+
+  const updateTaskTitle = useCallback(
+    (taskId: string, title: string) => {
+      setTasks(tasks.map((t) => t.id === taskId ? { ...t, title } : t));
     },
     [tasks, setTasks]
   );
@@ -45,10 +78,10 @@ export default function RoutineSetup() {
         transition={{ duration: 0.5 }}
       >
         <h1 className="font-display text-3xl font-bold text-foreground mb-1">
-          Rex's {routineName}
+          {characterName}'s {routineName}
         </h1>
         <p className="text-muted-foreground font-semibold text-sm">
-          Complete tasks to feed Rex!
+          Complete tasks to feed {characterName}!
         </p>
       </motion.div>
 
@@ -59,7 +92,7 @@ export default function RoutineSetup() {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5, delay: 0.2 }}
       >
-        <PixelRexCharacter state="idle" size={120} className="mx-auto" characterId={selectedCharacter} />
+        <PixelRexCharacter state="idle" size={180} className="mx-auto" characterId={selectedCharacter} />
       </motion.div>
 
       {/* === Routine Summary Card === */}
@@ -127,11 +160,22 @@ export default function RoutineSetup() {
                     key={task.id}
                     task={task}
                     onDurationChange={(delta) => updateTaskDuration(task.id, delta)}
+                    onDelete={() => deleteTask(task.id)}
+                    onTitleChange={(title) => updateTaskTitle(task.id, title)}
                   />
                 ))}
               </Reorder.Group>
 
-              <p className="text-xs text-muted-foreground text-center mt-3">
+              {/* Add task button */}
+              <button
+                onClick={addTask}
+                className="mt-3 w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border-2 border-dashed border-border hover:border-primary hover:bg-primary/5 transition-colors text-sm font-semibold text-muted-foreground hover:text-primary"
+              >
+                <PlusCircle className="w-4 h-4" />
+                Add a task
+              </button>
+
+              <p className="text-xs text-muted-foreground text-center mt-2">
                 Drag to reorder · Tap +/- to adjust time
               </p>
             </motion.div>
@@ -171,52 +215,62 @@ export default function RoutineSetup() {
 interface TaskBuilderItemProps {
   task: Task;
   onDurationChange: (delta: number) => void;
+  onDelete: () => void;
+  onTitleChange: (title: string) => void;
 }
 
-function TaskBuilderItem({ task, onDurationChange }: TaskBuilderItemProps) {
+function TaskBuilderItem({ task, onDurationChange, onDelete, onTitleChange }: TaskBuilderItemProps) {
   return (
     <Reorder.Item
       value={task}
-      className="flex items-center gap-2 py-2.5 px-3 rounded-xl bg-secondary/50 cursor-grab active:cursor-grabbing"
+      className="flex flex-col gap-2 py-2.5 px-3 rounded-xl bg-secondary/50 cursor-grab active:cursor-grabbing"
       whileDrag={{
         scale: 1.03,
         boxShadow: "0 8px 25px rgba(139, 109, 78, 0.15)",
         backgroundColor: "rgba(255, 255, 255, 0.95)",
       }}
     >
-      {/* Drag handle */}
-      <GripVertical className="w-4 h-4 text-muted-foreground/50 flex-shrink-0" />
-
-      {/* Emoji + title */}
-      <span className="text-lg flex-shrink-0">{task.itemEmoji}</span>
-      <span className="font-semibold text-sm flex-1 truncate">{task.title}</span>
-
-      {/* Duration stepper */}
-      <div className="flex items-center gap-1.5 flex-shrink-0">
+      {/* Top row: drag handle + title input + delete */}
+      <div className="flex items-center gap-2">
+        <GripVertical className="w-4 h-4 text-muted-foreground/50 shrink-0" />
+        <span className="text-lg shrink-0">{task.itemEmoji}</span>
+        <input
+          type="text"
+          value={task.title}
+          onChange={(e) => onTitleChange(e.target.value)}
+          onPointerDown={(e) => e.stopPropagation()}
+          placeholder="Task name..."
+          className="flex-1 bg-transparent font-semibold text-sm text-foreground placeholder:text-muted-foreground/50 outline-none border-b border-transparent focus:border-border min-w-0"
+        />
         <button
-          onClick={(e) => {
-            e.stopPropagation();
-            onDurationChange(-1);
-          }}
+          onClick={(e) => { e.stopPropagation(); onDelete(); }}
+          onPointerDown={(e) => e.stopPropagation()}
+          className="shrink-0 w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground/50 hover:text-red-400 hover:bg-red-50 transition-colors"
+        >
+          <Trash2 className="w-3.5 h-3.5" />
+        </button>
+      </div>
+
+      {/* Bottom row: duration stepper */}
+      <div className="flex items-center gap-1.5 pl-10">
+        <button
+          onClick={(e) => { e.stopPropagation(); onDurationChange(-1); }}
+          onPointerDown={(e) => e.stopPropagation()}
           disabled={task.durationMinutes <= 1}
           className="w-7 h-7 rounded-lg bg-white/80 border border-border flex items-center justify-center hover:bg-white transition-colors disabled:opacity-30"
         >
           <Minus className="w-3.5 h-3.5" />
         </button>
-
         <span
-          className="w-8 text-center font-display font-bold text-sm"
+          className="w-10 text-center font-display font-bold text-sm"
           style={{ color: task.themeColor }}
         >
           {task.durationMinutes}m
         </span>
-
         <button
-          onClick={(e) => {
-            e.stopPropagation();
-            onDurationChange(1);
-          }}
-          disabled={task.durationMinutes >= 5}
+          onClick={(e) => { e.stopPropagation(); onDurationChange(1); }}
+          onPointerDown={(e) => e.stopPropagation()}
+          disabled={task.durationMinutes >= 60}
           className="w-7 h-7 rounded-lg bg-white/80 border border-border flex items-center justify-center hover:bg-white transition-colors disabled:opacity-30"
         >
           <Plus className="w-3.5 h-3.5" />

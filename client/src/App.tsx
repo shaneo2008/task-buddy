@@ -3,6 +3,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import CharacterSelection from "./pages/CharacterSelection";
+import RoutinePicker from "./pages/RoutinePicker";
 import RoutineSetup from "./pages/RoutineSetup";
 import ActivePlayer from "./pages/ActivePlayer";
 import RoutineComplete from "./pages/RoutineComplete";
@@ -31,6 +32,7 @@ function ScreenRouter() {
         className="min-h-screen"
       >
         {screen === "selection" && <CharacterSelection />}
+        {screen === "picker" && <RoutinePicker />}
         {screen === "setup" && <RoutineSetup />}
         {screen === "player" && <ActivePlayer />}
         {screen === "complete" && <RoutineComplete />}
