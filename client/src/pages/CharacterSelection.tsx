@@ -40,7 +40,7 @@ export default function CharacterSelection() {
         <div className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center">
           <span className="text-lg">✨</span>
         </div>
-        <span className="font-semibold text-amber-800 text-sm">Bedtime Buddy</span>
+        <span className="font-semibold text-amber-800 text-sm">Task Buddy</span>
       </div>
 
       {/* Title */}

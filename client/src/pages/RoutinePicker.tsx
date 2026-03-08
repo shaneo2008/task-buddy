@@ -39,7 +39,7 @@ export default function RoutinePicker() {
         >
           <span className="text-sm">←</span>
         </button>
-        <span className="font-semibold text-amber-800 text-sm">Bedtime Buddy</span>
+        <span className="font-semibold text-amber-800 text-sm">Task Buddy</span>
       </div>
 
       {/* Title */}
