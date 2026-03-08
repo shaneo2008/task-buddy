@@ -217,7 +217,7 @@
     font-size: 1rem;
     box-shadow: 0 4px 14px rgba(123, 199, 77, 0.3);
     transition: all 0.2s ease;
-    border: 2px dashed rgba(255, 255, 255, 0.5);
+    border: none;
     min-height: 48px;
     position: relative;
     overflow: hidden;

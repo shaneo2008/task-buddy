@@ -18,7 +18,8 @@ export interface Task {
 }
 
 export type RexAnimState = "idle" | "bored" | "hungry" | "eating" | "celebrating";
-export type AppScreen = "selection" | "setup" | "player" | "complete";
+export type AppScreen = "selection" | "picker" | "setup" | "player" | "complete";
+export type RoutineType = "bedtime" | "morning" | "homework" | "custom";
 export type CharacterId = "rex" | "snapper" | "snoozy" | "masha" | "hoppy" | "stella" | "zen" | "sparky" | "flutty" | "luna" | "buddy" | "finn";
 
 interface RoutineState {
@@ -45,6 +46,7 @@ interface RoutineState {
   // Actions
   setScreen: (screen: AppScreen) => void;
   setSelectedCharacter: (character: CharacterId) => void;
+  setRoutine: (type: RoutineType, customName?: string) => void;
   setTasks: (tasks: Task[]) => void;
   setRoutineName: (name: string) => void;
   startRoutine: () => void;
@@ -101,6 +103,92 @@ const DEFAULT_BEDTIME_TASKS: Task[] = [
   },
 ];
 
+const DEFAULT_MORNING_TASKS: Task[] = [
+  {
+    id: "wake-up",
+    title: "Get Dressed",
+    durationMinutes: 5,
+    itemEmoji: "👕",
+    itemLabel: "Clothes",
+    themeColor: "#FFB347",
+  },
+  {
+    id: "wash-face",
+    title: "Wash Face",
+    durationMinutes: 2,
+    itemEmoji: "🧼",
+    itemLabel: "Soap",
+    themeColor: "#5BC0EB",
+  },
+  {
+    id: "brush-teeth-morning",
+    title: "Brush Teeth",
+    durationMinutes: 2,
+    itemEmoji: "🪥",
+    itemLabel: "Toothbrush",
+    themeColor: "#9B8FE8",
+  },
+  {
+    id: "eat-breakfast",
+    title: "Eat Breakfast",
+    durationMinutes: 10,
+    itemEmoji: "🥣",
+    itemLabel: "Bowl",
+    themeColor: "#FF6B6B",
+  },
+  {
+    id: "pack-bag",
+    title: "Pack Your Bag",
+    durationMinutes: 3,
+    itemEmoji: "🎒",
+    itemLabel: "Backpack",
+    themeColor: "#7BC74D",
+  },
+];
+
+const DEFAULT_HOMEWORK_TASKS: Task[] = [
+  {
+    id: "unpack-bag",
+    title: "Unpack Your Bag",
+    durationMinutes: 2,
+    itemEmoji: "🎒",
+    itemLabel: "Backpack",
+    themeColor: "#FFB347",
+  },
+  {
+    id: "have-snack",
+    title: "Have a Snack",
+    durationMinutes: 5,
+    itemEmoji: "🍎",
+    itemLabel: "Apple",
+    themeColor: "#FF6B6B",
+  },
+  {
+    id: "reading",
+    title: "Reading",
+    durationMinutes: 15,
+    itemEmoji: "📖",
+    itemLabel: "Book",
+    themeColor: "#9B8FE8",
+  },
+  {
+    id: "homework",
+    title: "Homework",
+    durationMinutes: 20,
+    itemEmoji: "✏️",
+    itemLabel: "Pencil",
+    themeColor: "#5BC0EB",
+  },
+  {
+    id: "pack-bag-homework",
+    title: "Pack Bag for Tomorrow",
+    durationMinutes: 3,
+    itemEmoji: "📚",
+    itemLabel: "Books",
+    themeColor: "#7BC74D",
+  },
+];
+
 export const useRoutineStore = create<RoutineState>((set, get) => ({
   screen: "selection",
   selectedCharacter: "rex",
@@ -116,6 +204,22 @@ export const useRoutineStore = create<RoutineState>((set, get) => ({
   setScreen: (screen) => set({ screen }),
 
   setSelectedCharacter: (character) => set({ selectedCharacter: character }),
+
+  setRoutine: (type, customName) => {
+    const taskMap: Record<RoutineType, Task[]> = {
+      bedtime: DEFAULT_BEDTIME_TASKS,
+      morning: DEFAULT_MORNING_TASKS,
+      homework: DEFAULT_HOMEWORK_TASKS,
+      custom: [],
+    };
+    const nameMap: Record<RoutineType, string> = {
+      bedtime: "Bedtime",
+      morning: "Morning",
+      homework: "Homework",
+      custom: customName || "My Routine",
+    };
+    set({ tasks: taskMap[type], routineName: nameMap[type], screen: "setup" });
+  },
 
   setTasks: (tasks) => set({ tasks }),
 
@@ -199,7 +303,7 @@ export const useRoutineStore = create<RoutineState>((set, get) => ({
     const { timerInterval } = get();
     if (timerInterval) clearInterval(timerInterval);
     set({
-      screen: "selection",
+      screen: "picker",
       currentTaskIndex: 0,
       timeLeft: 60,
       totalTime: 60,
