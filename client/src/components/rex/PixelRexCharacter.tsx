@@ -9,6 +9,19 @@ const LARGE_CHARACTERS = ["rex", "snapper", "snoozy", "masha", "hoppy", "stella"
 // Characters with 64px frames (16 frames)
 const SMALL_CHARACTERS = ["zen", "sparky", "luna", "buddy", "finn"];
 
+// Size multipliers for specific characters (1.0 = default)
+const CHARACTER_SIZE_MULTIPLIERS: Record<string, number> = {
+  hoppy: 1.2,
+  snoozy: 1.2,
+  luna: 1.3,
+  buddy: 1.2,
+  rex: 1.3,
+  snapper: 1.3,
+  masha: 1.2,
+  stella: 1.2,
+  flutty: 1.2,
+};
+
 interface PixelRexCharacterProps {
   state: RexState;
   eatPhase?: EatPhase;
@@ -60,7 +73,7 @@ export default function PixelRexCharacter({
     }
   }, [state, eatPhase, isChomping]);
 
-  const scale = size / SPRITE_FRAME_SIZE;
+  const scale = (size / SPRITE_FRAME_SIZE) * (CHARACTER_SIZE_MULTIPLIERS[characterId] || 1);
 
   const animStyles: Record<string, React.CSSProperties> = {
     idle:      { backgroundImage: `url('/${characterId}-idle.png')` },
