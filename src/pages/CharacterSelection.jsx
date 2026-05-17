@@ -55,8 +55,8 @@ export default function CharacterSelection() {
       {/* Carousel with arrows */}
       <div className="relative w-full max-w-sm mx-auto mb-2 flex-1 min-h-0 sm:mb-4">
         <div className="absolute inset-8 rounded-full bg-peach-accent/15 blur-3xl pointer-events-none" />
-        <div className="relative flex h-full min-h-0 w-full flex-col rounded-[32px] border border-cocoa-300/15 bg-white/40 px-1 py-2.5 sm:px-3 sm:py-5 shadow-lg backdrop-blur-md overflow-visible">
-          <div className="absolute inset-x-10 top-3 h-16 rounded-full bg-peach-100/20 blur-2xl pointer-events-none" />
+        <div className="relative flex h-full min-h-0 w-full flex-col rounded-[32px] border-2 border-olive-accent/30 bg-gradient-to-b from-white/40 to-olive-50/10 px-1 py-2.5 sm:px-3 sm:py-5 shadow-lg backdrop-blur-md overflow-visible">
+          <div className="absolute inset-x-10 top-3 h-16 rounded-full bg-olive-100/15 blur-2xl pointer-events-none" />
         <button
           onClick={() => emblaApi?.scrollPrev()}
           className="absolute left-1 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-2xl bg-white/70 border border-cocoa-300/15 shadow-sm flex items-center justify-center hover:bg-white/90 transition-colors backdrop-blur-sm sm:left-0 sm:w-11 sm:h-11"

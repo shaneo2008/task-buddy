@@ -25,6 +25,13 @@ export default {
           300: '#D98255',
           accent: '#F0A275',
         },
+        olive: {
+          50:  '#B8C5A8',
+          100: '#A8B89A',
+          200: '#8FA67D',
+          300: '#7A9268',
+          accent: '#A8B89A',
+        },
         danger:  '#E88B8B',
       },
       fontFamily: {

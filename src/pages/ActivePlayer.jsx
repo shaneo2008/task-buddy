@@ -168,8 +168,7 @@ export default function ActivePlayer() {
               {tasksRemaining > 0 ? <span>· {tasksRemaining} left after this</span> : <span>· final step</span>}
             </div>
             <h2
-              className="font-display text-[1.55rem] sm:text-[2rem] font-bold text-center mb-1 leading-tight"
-              style={{ color: currentTask?.themeColor || COMPLETED_TASK_COLOR }}
+              className="font-display text-[1.55rem] sm:text-[2rem] font-bold text-center mb-1 leading-tight text-cocoa-text"
             >
               {currentTask?.title}
             </h2>

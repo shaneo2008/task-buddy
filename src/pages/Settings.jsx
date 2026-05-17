@@ -120,15 +120,17 @@ export default function Settings() {
           </div>
           <button
             onClick={handleToggleRewards}
-            className={`relative w-12 h-7 rounded-full transition-colors ${
-              rewardsEnabled ? 'bg-peach-accent' : 'bg-cocoa-300/30'
+            className={`relative w-14 h-8 rounded-full transition-all shadow-inner ${
+              rewardsEnabled ? 'bg-olive-200' : 'bg-cocoa-100/40'
             }`}
           >
             <span
-              className={`absolute top-1 left-1 w-5 h-5 rounded-full bg-white shadow-sm transition-transform ${
-                rewardsEnabled ? 'translate-x-5' : 'translate-x-0'
+              className={`absolute top-1 left-1 w-6 h-6 rounded-full shadow-md transition-all flex items-center justify-center text-xs ${
+                rewardsEnabled ? 'translate-x-6 bg-olive-300' : 'translate-x-0 bg-cocoa-50'
               }`}
-            />
+            >
+              {rewardsEnabled ? '✓' : '✕'}
+            </span>
           </button>
         </div>
       </div>

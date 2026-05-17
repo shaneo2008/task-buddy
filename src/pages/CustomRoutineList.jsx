@@ -165,7 +165,7 @@ export default function CustomRoutineList() {
                 onKeyDown={(e) => e.key === 'Enter' && handleCreate()}
                 placeholder="e.g. Sports Night"
                 maxLength={24}
-                className="w-full bg-[#140e0a]/90 border-2 border-cocoa-300/15 rounded-2xl px-4 py-3 text-cocoa-text font-body text-base outline-none focus:border-peach-accent/50 mb-3"
+                className="w-full bg-white/70 border-2 border-cocoa-300/20 rounded-2xl px-4 py-3 text-cocoa-text placeholder:text-cocoa-50 font-body text-base outline-none focus:border-peach-accent/50 mb-3 backdrop-blur-sm"
               />
 
               {/* Emoji picker */}
