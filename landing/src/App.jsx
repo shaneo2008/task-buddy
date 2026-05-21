@@ -1,0 +1,276 @@
+import { useState, useEffect, useCallback } from 'react';
+
+function Spark({ style, size = 24, opacity = 0.55 }) {
+  return (
+    <svg
+      width={size}
+      height={size * 0.86}
+      viewBox="-28 -24 56 48"
+      className="deco-spark"
+      style={style}
+      aria-hidden="true"
+    >
+      <g fill="#F0A275" opacity={opacity}>
+        <path d="M0,-18 C3,-6 6,-3 18,0 C6,3 3,6 0,18 C-3,6 -6,3 -18,0 C-6,-3 -3,-6 0,-18 Z" />
+        <circle cx="24" cy="-17" r="4" />
+        <circle cx="-22" cy="20" r="3.5" />
+      </g>
+    </svg>
+  );
+}
+
+const APP_URL = 'https://task-buddy-ten-dun.vercel.app/';
+
+/* ── Sprite sheet constants (matches app's PixelRexCharacter) ── */
+const FRAME_SIZE   = 128;
+const FRAME_COLS   = 4;
+const FRAME_ROWS   = 4;
+const FRAME_COUNT  = 16;
+const FRAME_MS     = 100; // 1600ms / 16 frames
+
+const SIZE_MULT = {
+  hoppy: 1.56, snoozy: 1.56, sparky: 1.45, luna: 1.56,
+  zen:   1.43, buddy:  1.44, rex:   1.68, snapper: 1.74,
+  finn:  1.57, masha:  1.62, stella: 1.68, flutty: 1.62,
+};
+
+function BuddySprite({ buddyId, size = 160 }) {
+  const [frame, setFrame] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => setFrame(f => (f + 1) % FRAME_COUNT), FRAME_MS);
+    return () => clearInterval(timer);
+  }, []);
+
+  const scale  = (size / FRAME_SIZE) * (SIZE_MULT[buddyId] || 1);
+  const col    = frame % FRAME_COLS;
+  const row    = Math.floor(frame / FRAME_COLS);
+  const bgPos  = `-${col * FRAME_SIZE}px -${row * FRAME_SIZE}px`;
+  const bgSize = `${FRAME_SIZE * FRAME_COLS}px ${FRAME_SIZE * FRAME_ROWS}px`;
+
+  return (
+    <div style={{ width: size, height: size, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'visible' }}>
+      <div
+        style={{
+          width: FRAME_SIZE,
+          height: FRAME_SIZE,
+          transform: `scale(${scale})`,
+          transformOrigin: 'center',
+          backgroundImage: `url('/buddy-watercolor/${buddyId}-celebrate.webp')`,
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: bgSize,
+          backgroundPosition: bgPos,
+          willChange: 'background-position',
+          imageRendering: 'auto',
+        }}
+      />
+    </div>
+  );
+}
+
+const buddies = [
+  { id: 'buddy',  name: 'Buddy'  },
+  { id: 'hoppy',  name: 'Hoppy'  },
+  { id: 'rex',    name: 'Rex'    },
+  { id: 'flutty', name: 'Flutty' },
+];
+
+const routines = [
+  { emoji: '🌙', name: 'Bedtime',  tagline: 'Wind down without the battle' },
+  { emoji: '☀️', name: 'Morning',  tagline: 'Out the door without the chaos' },
+  { emoji: '📚', name: 'Homework', tagline: 'Focus without the meltdown' },
+  { emoji: '⭐', name: 'Custom',   tagline: 'Build any routine that fits your child' },
+];
+
+function BuddyCarousel() {
+  const [idx, setIdx] = useState(0);
+  const [visible, setVisible] = useState(true);
+
+  const goTo = useCallback((next) => {
+    setVisible(false);
+    setTimeout(() => {
+      setIdx(next);
+      setVisible(true);
+    }, 250);
+  }, []);
+
+  const prev = () => goTo((idx - 1 + buddies.length) % buddies.length);
+  const next = () => goTo((idx + 1) % buddies.length);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      goTo((idx + 1) % buddies.length);
+    }, 2800);
+    return () => clearInterval(id);
+  }, [idx, goTo]);
+
+  const buddy = buddies[idx];
+
+  return (
+    <div className="flex flex-col items-center gap-3 mb-5">
+      <a
+        href={APP_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="buddy-carousel-link"
+        aria-label={`Meet ${buddy.name} in the app`}
+      >
+        <div
+          className="buddy-float"
+          style={{ opacity: visible ? 1 : 0, transition: 'opacity 0.25s ease' }}
+        >
+          <BuddySprite buddyId={buddy.id} size={160} />
+        </div>
+        <p
+          className="text-center font-display font-bold text-sm mt-1"
+          style={{ opacity: visible ? 0.6 : 0, transition: 'opacity 0.25s ease' }}
+        >
+          {buddy.name}
+        </p>
+      </a>
+
+      {/* Controls */}
+      <div className="flex items-center gap-3">
+        <button onClick={prev} className="carousel-arrow" aria-label="Previous buddy">&#8249;</button>
+        <div className="flex gap-1.5">
+          {buddies.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => goTo(i)}
+              aria-label={`View ${buddies[i].name}`}
+              className={`carousel-dot${i === idx ? ' carousel-dot-active' : ''}`}
+            />
+          ))}
+        </div>
+        <button onClick={next} className="carousel-arrow" aria-label="Next buddy">&#8250;</button>
+      </div>
+    </div>
+  );
+}
+
+export default function App() {
+  return (
+    <div className="relative min-h-screen bg-cream-gradient text-cocoa-text overflow-x-hidden">
+      <div className="fixed inset-0 bg-cream-glow pointer-events-none" aria-hidden="true" />
+
+      {/* Decorative sparks */}
+      <Spark style={{ top: '6%',    left: '8%'   }} size={26} opacity={0.5}  />
+      <Spark style={{ top: '16%',   right: '9%'  }} size={18} opacity={0.38} />
+      <Spark style={{ top: '48%',   left: '5%'   }} size={14} opacity={0.25} />
+      <Spark style={{ bottom: '18%',right: '7%'  }} size={20} opacity={0.3}  />
+
+      <main className="relative max-w-[440px] mx-auto px-5 pt-10 pb-16 flex flex-col items-center">
+
+        {/* ── Logo ── */}
+        <div className="w-full flex justify-center mb-6">
+          <img
+            src="/logo.svg"
+            alt="Task Buddies"
+            width="480"
+            height="240"
+            className="w-64 sm:w-72"
+          />
+        </div>
+
+        {/* ── Buddy carousel ── */}
+        <BuddyCarousel />
+
+        {/* ── Eyebrow ── */}
+        <div className="eyebrow-pill mb-5">
+          Free. No signup. Works offline.
+        </div>
+
+        {/* ── Headline ── */}
+        <h1 className="font-display font-extrabold text-[2.5rem] sm:text-5xl text-center leading-[1.1] mb-4">
+          Routines are hard.
+          <br />
+          Buddies help.
+        </h1>
+
+        {/* ── Subheadline ── */}
+        <p className="text-center text-[1.0625rem] leading-relaxed opacity-75 max-w-xs mb-12">
+          Task Buddies gives children a cosy companion that guides
+          them through their routine, one step at a time. No nagging required.
+        </p>
+
+        {/* ── Body doubling ── */}
+        <section className="glass-card w-full mb-10" aria-label="About body doubling">
+          <div className="space-y-4 text-[0.9375rem] leading-relaxed">
+            <p>
+              Ever noticed how a task that feels impossible alone suddenly becomes
+              manageable when someone is just... there?
+            </p>
+            <p>
+              That's body doubling. A simple, well-documented principle that helps
+              children, especially those whose brains work a little differently,
+              move through tasks they would otherwise resist. Having a present
+              companion, even a digital one, lowers the demand enough to get started.
+            </p>
+            <p>
+              Task Buddies puts that principle into a free, offline-ready app.
+              The Buddy sits with your child through their routine. Each completed
+              task feeds the Buddy. No pressure. No timers counting down. Just a
+              small, encouraging presence making the next step feel possible.
+            </p>
+          </div>
+        </section>
+
+        {/* ── Rewards ── */}
+        <section className="glass-card w-full mb-10" aria-label="About rewards">
+          <div className="space-y-4 text-[0.9375rem] leading-relaxed">
+            <p>
+              When the routine is done, a reward chest appears.
+            </p>
+            <p>
+              Inside, it's not screen time or sugar. It's a secret handshake.
+              Sixty seconds of freeze dance. One minute of silly faces, together.
+              Small enough that you'll always say yes. Big enough that they'll
+              actually remember.
+            </p>
+            <p>
+              Rewards in Task Buddies are built to hand you a moment of connection,
+              not manage it away. The chest is the excuse. The minute you spend
+              together is the point.
+            </p>
+          </div>
+        </section>
+
+        {/* ── Routine types ── */}
+        <section className="w-full mb-5" aria-label="Routine types">
+          <div className="grid grid-cols-2 gap-3">
+            {routines.map(({ emoji, name, tagline }) => (
+              <div key={name} className="routine-card">
+                <span className="text-2xl leading-none mb-1" role="img" aria-label={name}>{emoji}</span>
+                <span className="font-display font-bold text-sm">{name}</span>
+                <span className="text-[0.75rem] leading-snug opacity-60">{tagline}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ── Trust line ── */}
+        <p className="text-[0.8125rem] text-center opacity-50 leading-relaxed mb-8 max-w-[280px]">
+          No data collected. No cookies. No account needed.
+          <br />
+          Just open it and go.
+        </p>
+
+        {/* ── CTA ── */}
+        <a
+          href={APP_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="btn-launch w-full mb-12"
+        >
+          Meet your Buddy
+        </a>
+
+        {/* ── Footer ── */}
+        <footer className="text-xs text-center opacity-40">
+          Made by Coatfire &nbsp;&middot;&nbsp; taskbuddies.app
+        </footer>
+
+      </main>
+    </div>
+  );
+}
