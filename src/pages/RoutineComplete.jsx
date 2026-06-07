@@ -100,7 +100,7 @@ export default function RoutineComplete() {
   }, [rewardsEnabled, pickedReward, rewards]);
 
   return (
-    <div data-buddy-scroll="true" className="w-full h-full min-h-0 overflow-y-auto overflow-x-hidden overscroll-contain px-4 pt-3 pb-6 relative text-cocoa-text sm:pt-5 sm:pb-8">
+    <div data-buddy-scroll="true" className="w-full h-full min-h-0 overflow-y-auto overflow-x-hidden overscroll-contain px-4 pt-3 pb-6 relative text-cocoa-text sm:pt-5 sm:pb-8" style={{ background: 'linear-gradient(180deg, #FFF9E6 0%, #FFF0C8 40%, #FDEAB8 100%)' }}>
       {/* Confetti Layer */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {confetti.map((piece) => (
@@ -215,7 +215,7 @@ export default function RoutineComplete() {
                     </MotionDiv>
                     <div className="text-center">
                       <p className="text-[10px] uppercase tracking-[0.16em] text-peach-300 font-body mb-1">Your Reward</p>
-                      <p className="font-display font-bold text-lg text-cocoa-text leading-snug">{pickedReward.text}</p>
+                      <p className="font-display font-black text-2xl text-cocoa-text leading-snug text-center">{pickedReward.text}</p>
                     </div>
                   </MotionDiv>
                 )}

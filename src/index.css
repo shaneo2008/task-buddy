@@ -10,7 +10,7 @@ html, body, #root {
 
 body {
   font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
-  background: #F6E5CC;
+  background: #FAF8F4;
   color: #24130D;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -24,7 +24,7 @@ button { font-family: inherit; }
   background: rgba(255, 255, 255, 0.65);
   border: 1.5px solid rgba(36, 19, 13, 0.12);
   border-radius: 1.25rem;
-  box-shadow: 0 8px 32px -8px rgba(36, 19, 13, 0.15);
+  box-shadow: 0 16px 48px -8px rgba(36, 19, 13, 0.12), 0 4px 16px -4px rgba(36, 19, 13, 0.08);
   backdrop-filter: blur(8px);
 }
 
@@ -32,50 +32,50 @@ button { font-family: inherit; }
 .btn-primary {
   background: linear-gradient(135deg, #F0A275 0%, #E8956A 100%);
   color: #24130D;
-  font-family: 'Fraunces', 'DM Sans', serif;
-  font-weight: 700;
+  font-family: 'Nunito', 'DM Sans', sans-serif;
+  font-weight: 800;
   font-size: 1.0625rem;
   letter-spacing: 0.01em;
   border: none;
   border-radius: 1rem;
   padding: 0.875rem 1.25rem;
-  box-shadow: 0 8px 20px rgba(240, 162, 117, 0.25);
-  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+  box-shadow: 0 5px 0 0 #b8693a, 0 8px 20px rgba(240, 162, 117, 0.3);
+  transition: transform 0.12s ease, box-shadow 0.12s ease, opacity 0.2s ease;
   min-height: 56px;
   cursor: pointer;
 }
-.btn-primary:hover:not(:disabled) { transform: scale(1.03); box-shadow: 0 12px 28px rgba(240, 162, 117, 0.35); }
-.btn-primary:active:not(:disabled) { transform: scale(0.97); }
+.btn-primary:hover:not(:disabled) { transform: translateY(-2px) scale(1.02); box-shadow: 0 7px 0 0 #b8693a, 0 14px 28px rgba(240, 162, 117, 0.35); }
+.btn-primary:active:not(:disabled) { transform: translateY(4px) scale(0.99); box-shadow: 0 1px 0 0 #b8693a, 0 3px 10px rgba(240, 162, 117, 0.2); }
 .btn-primary:disabled { opacity: 0.5; }
 
 .btn-coral {
   background: linear-gradient(135deg, #D98255 0%, #C78A6E 100%);
   color: #24130D;
-  font-family: 'Fraunces', 'DM Sans', serif;
-  font-weight: 700;
+  font-family: 'Nunito', 'DM Sans', sans-serif;
+  font-weight: 800;
   font-size: 1.0625rem;
   border: none;
   border-radius: 1rem;
   padding: 0.875rem 1.25rem;
-  box-shadow: 0 8px 20px rgba(217, 130, 85, 0.25);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 5px 0 0 #9e5c35, 0 8px 20px rgba(217, 130, 85, 0.3);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
   min-height: 56px;
   cursor: pointer;
 }
-.btn-coral:hover:not(:disabled) { transform: scale(1.03); box-shadow: 0 12px 28px rgba(217, 130, 85, 0.35); }
-.btn-coral:active:not(:disabled) { transform: scale(0.97); }
+.btn-coral:hover:not(:disabled) { transform: translateY(-2px) scale(1.02); box-shadow: 0 7px 0 0 #9e5c35, 0 14px 28px rgba(217, 130, 85, 0.35); }
+.btn-coral:active:not(:disabled) { transform: translateY(4px) scale(0.99); box-shadow: 0 1px 0 0 #9e5c35, 0 3px 10px rgba(217, 130, 85, 0.2); }
 
 .btn-done-early {
   background: linear-gradient(135deg, #8A9561 0%, #677247 100%);
   color: white;
-  font-family: 'Fraunces', 'DM Sans', serif;
-  font-weight: 700;
+  font-family: 'Nunito', 'DM Sans', sans-serif;
+  font-weight: 800;
   font-size: 1rem;
   border: none;
   border-radius: 1rem;
   padding: 0.875rem 1.25rem;
-  box-shadow: 0 10px 24px rgba(103, 114, 71, 0.28);
-  transition: transform 0.2s ease;
+  box-shadow: 0 5px 0 0 #4a5233, 0 10px 24px rgba(103, 114, 71, 0.28);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
   min-height: 56px;
   position: relative;
   overflow: hidden;
@@ -88,8 +88,8 @@ button { font-family: inherit; }
   background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
   animation: btn-shimmer 2.5s ease-in-out infinite;
 }
-.btn-done-early:hover:not(:disabled) { transform: scale(1.03); }
-.btn-done-early:active:not(:disabled) { transform: scale(0.97); }
+.btn-done-early:hover:not(:disabled) { transform: translateY(-2px) scale(1.02); box-shadow: 0 7px 0 0 #4a5233, 0 14px 28px rgba(103, 114, 71, 0.32); }
+.btn-done-early:active:not(:disabled) { transform: translateY(4px) scale(0.99); box-shadow: 0 1px 0 0 #4a5233, 0 3px 10px rgba(103, 114, 71, 0.18); }
 
 @keyframes btn-shimmer {
   0%   { transform: translateX(-100%); }

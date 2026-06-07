@@ -36,7 +36,7 @@ export default {
       },
       fontFamily: {
         sans:    ['DM Sans', 'system-ui', '-apple-system', 'sans-serif'],
-        display: ['Fraunces', 'DM Sans', 'system-ui', 'serif'],
+        display: ['Nunito', 'DM Sans', 'system-ui', 'sans-serif'],
         body:    ['DM Sans', 'system-ui', '-apple-system', 'sans-serif'],
       },
       boxShadow: {
@@ -44,7 +44,7 @@ export default {
         card:  '0 18px 48px -30px rgba(0, 0, 0, 0.7)',
       },
       backgroundImage: {
-        'cream-gradient': 'linear-gradient(180deg, #F6E5CC 0%, #EDD9B8 50%, #E0C9A5 100%)',
+        'cream-gradient': 'linear-gradient(180deg, #FAF8F4 0%, #F4EDE0 50%, #EDE3D3 100%)',
         'cream-glow':     'radial-gradient(ellipse at 50% 0%, rgba(240, 162, 117, 0.12) 0%, rgba(240, 162, 117, 0.04) 35%, transparent 72%)',
       },
     },

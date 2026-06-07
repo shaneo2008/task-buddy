@@ -287,14 +287,14 @@ export default function ActivePlayer() {
               {isWaiting && (
                 <button
                   onClick={isRunning ? pauseRoutine : resumeRoutine}
-                  className="bg-white/60/92 border border-cocoa-300/15 rounded-2xl py-2.5 sm:py-3 font-display font-semibold text-sm text-cocoa-text hover:text-cocoa-text hover:bg-[#2c1d13] transition-colors"
+                  className="bg-white/60 border border-cocoa-300/15 rounded-2xl py-2.5 sm:py-3 font-display font-semibold text-sm text-cocoa-text hover:bg-[#ecd9c6] active:bg-[#dfc4a8] transition-colors"
                 >
                   {isRunning ? 'Pause' : 'Resume'}
                 </button>
               )}
               <button
                 onClick={skipTask}
-                className={`${!isWaiting ? 'col-span-2' : ''} bg-white/60/92 border border-cocoa-300/15 rounded-2xl py-2.5 sm:py-3 font-display font-semibold text-sm text-cocoa-text hover:text-cocoa-text hover:bg-[#2c1d13] transition-colors`}
+                className={`${!isWaiting ? 'col-span-2' : ''} bg-white/60 border border-cocoa-300/15 rounded-2xl py-2.5 sm:py-3 font-display font-semibold text-sm text-cocoa-text hover:bg-[#ecd9c6] active:bg-[#dfc4a8] transition-colors`}
               >
                 Skip
               </button>
