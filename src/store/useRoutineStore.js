@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 import { TASK_LIBRARY, DEFAULT_ROUTINE_TASKS, getTaskByKey } from './taskLibrary';
 import {
   readSavedRoutineTasks,
@@ -10,8 +11,8 @@ import {
 /*
  * Routine Timer Store — Zustand state machine.
  * States: setup | idle | hungry | eating | transitioning | complete
- * Persistence: Saved task lists go to localStorage; in-memory timer state
- * is intentionally not persisted across reloads.
+ * Persistence: Saved task lists go to localStorage; timer state is persisted
+ * via zustand/persist (key: routine-timer-state) for mobile reload recovery.
  */
 
 const TASK_COLORS = ['#9D8AAE', '#86A4B3', '#C89A63', '#B86F56', '#81906F', '#B68FA1'];
@@ -39,7 +40,9 @@ function getDefaultTasksForType(type) {
   }).filter(Boolean);
 }
 
-export const useRoutineStore = create((set, get) => ({
+export const useRoutineStore = create(
+  persist(
+    (set, get) => ({
   screen: 'selection',
   selectedCharacter: 'rex',
   routineName: 'Bedtime',
@@ -122,48 +125,55 @@ export const useRoutineStore = create((set, get) => ({
 
   setRoutineName: (name) => set({ routineName: name }),
 
+  _ensureInterval: () => {
+    const { timerInterval } = get();
+    if (timerInterval) clearInterval(timerInterval);
+    const interval = setInterval(() => { get().tick(); }, 1000);
+    set({ timerInterval: interval });
+  },
+
   startRoutine: () => {
     const { tasks } = get();
     if (tasks.length === 0) return;
     const firstTask = tasks[0];
     const totalSeconds = firstTask.durationMinutes * 60;
-    const existing = get().timerInterval;
-    if (existing) clearInterval(existing);
-    const interval = setInterval(() => { get().tick(); }, 1000);
     set({
       screen: 'player',
       currentTaskIndex: 0,
       timeLeft: totalSeconds,
       totalTime: totalSeconds,
       isRunning: true,
-      timerInterval: interval,
       timerEndsAt: Date.now() + totalSeconds * 1000,
       rexState: 'idle',
     });
+    get()._ensureInterval();
   },
 
   tick: () => {
-    const { timeLeft, isRunning, rexState, timerEndsAt, timerInterval } = get();
+    const { timeLeft, isRunning, rexState, timerEndsAt, totalTime } = get();
     if (!isRunning || rexState === 'eating') return;
 
     const newTime = timerEndsAt
-      ? Math.max(0, Math.ceil((timerEndsAt - Date.now()) / 1000))
-      : Math.max(0, timeLeft);
+      ? Math.max(0, Math.round((timerEndsAt - Date.now()) / 1000))
+      : Math.max(0, timeLeft - 1);
 
     if (newTime <= 0) {
+      const { timerInterval } = get();
       if (timerInterval) clearInterval(timerInterval);
       set({ timeLeft: 0, rexState: 'hungry', isRunning: false, timerInterval: null, timerEndsAt: null });
     } else {
       let newRexState = rexState;
-      if (newTime < 30 && rexState === 'idle') newRexState = 'bored';
+      const boredThreshold = Math.max(30, Math.round(totalTime * 0.2));
+      if (newTime < boredThreshold && rexState === 'idle') newRexState = 'bored';
       set({ timeLeft: newTime, rexState: newRexState });
     }
   },
 
   feedRex: () => {
-    const { rexState } = get();
+    const { rexState, timerInterval } = get();
     if (rexState !== 'hungry' && rexState !== 'bored') return;
-    set({ rexState: 'eating', isRunning: false, timerEndsAt: null });
+    if (timerInterval) clearInterval(timerInterval);
+    set({ rexState: 'eating', isRunning: false, timerInterval: null, timerEndsAt: null });
   },
 
   onEatComplete: () => {
@@ -176,6 +186,7 @@ export const useRoutineStore = create((set, get) => ({
       const nextTask = tasks[nextIndex];
       const totalSeconds = nextTask.durationMinutes * 60;
       set({ currentTaskIndex: nextIndex, timeLeft: totalSeconds, totalTime: totalSeconds, rexState: 'idle', isRunning: true, timerEndsAt: Date.now() + totalSeconds * 1000 });
+      get()._ensureInterval();
     }
   },
 
@@ -194,28 +205,40 @@ export const useRoutineStore = create((set, get) => ({
   },
 
   pauseRoutine: () => {
+    const { rexState, timerInterval } = get();
+    if (rexState === 'eating') return;
     get().tick();
-    set({ isRunning: false, timerEndsAt: null });
+    if (timerInterval) clearInterval(timerInterval);
+    set({ isRunning: false, timerInterval: null, timerEndsAt: null });
   },
 
   resumeRoutine: () => {
     const { timeLeft, rexState } = get();
     if (timeLeft <= 0 || rexState === 'hungry' || rexState === 'eating') return;
     set({ isRunning: true, timerEndsAt: Date.now() + timeLeft * 1000 });
+    get()._ensureInterval();
   },
 
   skipTask: () => {
-    const { rexState } = get();
+    const { rexState, timerInterval } = get();
     if (rexState === 'eating') return;
-    set({ timeLeft: 0, rexState: 'hungry', isRunning: false, timerEndsAt: null });
+    if (timerInterval) clearInterval(timerInterval);
+    set({ timeLeft: 0, rexState: 'hungry', isRunning: false, timerInterval: null, timerEndsAt: null });
   },
 
   doneEarly: () => {
-    const { rexState } = get();
+    const { rexState, timerInterval } = get();
     if (rexState !== 'idle' && rexState !== 'bored') return;
-    set({ timeLeft: 0, rexState: 'hungry', isRunning: false, timerEndsAt: null });
+    if (timerInterval) clearInterval(timerInterval);
+    set({ timeLeft: 0, rexState: 'hungry', isRunning: false, timerInterval: null, timerEndsAt: null });
   },
-}));
+    }),
+    {
+      name: 'routine-timer-state',
+      partialize: ({ timerInterval, ...rest }) => rest,
+    }
+  )
+);
 
 // Re-export library helpers for convenience
 export { TASK_LIBRARY };

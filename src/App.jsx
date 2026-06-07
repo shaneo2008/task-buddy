@@ -50,6 +50,27 @@ export default function App() {
     return () => window.cancelAnimationFrame(frameId);
   }, [screen]);
 
+  // On mount: if the page was reloaded while a routine was running (mobile tab discard),
+  // restart the interval from the persisted timerEndsAt.
+  useEffect(() => {
+    const { screen: s, isRunning, timerEndsAt } = useRoutineStore.getState();
+    if (s === 'player' && isRunning && timerEndsAt) {
+      const remaining = Math.max(0, Math.round((timerEndsAt - Date.now()) / 1000));
+      if (remaining <= 0) {
+        useRoutineStore.getState().tick();
+      } else {
+        useRoutineStore.getState()._ensureInterval();
+      }
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // On unmount: stop the interval but preserve state so the timer can resume on reload.
+  useEffect(() => () => {
+    const { timerInterval } = useRoutineStore.getState();
+    if (timerInterval) clearInterval(timerInterval);
+    useRoutineStore.setState({ timerInterval: null });
+  }, []);
+
   return (
     <div ref={rootRef} className="relative h-[100dvh] min-h-0 bg-cream-gradient text-cocoa-text overflow-hidden">
       <div className="absolute inset-0 bg-cream-glow pointer-events-none" />
