@@ -282,7 +282,7 @@ export default function ActivePlayer() {
         </AnimatePresence>
 
         {!isEatingSequence && (
-          <div className="mt-auto z-10 shrink-0 rounded-[28px] border border-cocoa-300/15 bg-white/50/82 p-2.5 sm:p-3 shadow-sm backdrop-blur-md">
+          <div className="mt-auto z-10 shrink-0 rounded-[28px] border border-white/10 bg-[#7A4A28] p-2.5 sm:p-3 shadow-sm backdrop-blur-md">
             <div className="grid grid-cols-2 gap-2.5 sm:gap-3">
               {isWaiting && (
                 <button

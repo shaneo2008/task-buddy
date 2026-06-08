@@ -79,23 +79,23 @@ export default function RoutineSetup() {
 
       <MotionDiv className="relative w-full max-w-sm mb-2.5 shrink-0 sm:mb-3" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }}>
         <div className="absolute inset-6 rounded-full bg-peach-accent/10 blur-3xl pointer-events-none" />
-        <div className="relative rounded-[32px] border border-cocoa-300/15 bg-white/40 px-3 py-3.5 sm:px-6 sm:py-6 shadow-lg backdrop-blur-md overflow-hidden text-center">
+        <div className="relative rounded-[32px] border border-white/10 bg-[#7A4A28] px-3 py-3.5 sm:px-6 sm:py-6 shadow-lg backdrop-blur-md overflow-hidden text-center">
           <div className="absolute inset-x-10 top-4 h-16 rounded-full bg-white/[0.04] blur-2xl pointer-events-none" />
-          <div className="hidden items-center gap-2 rounded-full border border-cocoa-300/15 bg-white/50/88 px-3 py-1 text-[10px] uppercase tracking-[0.16em] text-cocoa-50/65 font-body shadow-sm backdrop-blur-md mb-3 sm:inline-flex sm:py-1.5 sm:text-[11px] sm:mb-4">
+          <div className="hidden items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[10px] uppercase tracking-[0.16em] text-cream-200/70 font-body shadow-sm backdrop-blur-md mb-3 sm:inline-flex sm:py-1.5 sm:text-[11px] sm:mb-4">
             <span>Routine Preview</span>
             <span className="text-cocoa-text">{tasks.length} tasks</span>
           </div>
           <PixelRexCharacter state="idle" size={132} className="mx-auto sm:[transform:scale(1)]" characterId={selectedCharacter} />
           <div className="mt-2.5 grid grid-cols-3 gap-2">
-            <div className="rounded-2xl border border-cocoa-300/15 bg-white/50/82 px-3 py-2">
+            <div className="rounded-2xl border border-cocoa-300/15 bg-[#F6E5CC] px-3 py-2">
               <div className="text-[10px] uppercase tracking-[0.14em] text-cocoa-50/55 font-body">Total</div>
               <div className="text-sm font-display font-semibold text-cocoa-text mt-1">{totalMinutes} min</div>
             </div>
-            <div className="rounded-2xl border border-cocoa-300/15 bg-white/50/82 px-3 py-2">
+            <div className="rounded-2xl border border-cocoa-300/15 bg-[#F6E5CC] px-3 py-2">
               <div className="text-[10px] uppercase tracking-[0.14em] text-cocoa-50/55 font-body">Average</div>
               <div className="text-sm font-display font-semibold text-cocoa-text mt-1">{averageMinutes || 0} min</div>
             </div>
-            <div className="rounded-2xl border border-cocoa-300/15 bg-white/50/82 px-3 py-2">
+            <div className="rounded-2xl border border-cocoa-300/15 bg-[#F6E5CC] px-3 py-2">
               <div className="text-[10px] uppercase tracking-[0.14em] text-cocoa-50/55 font-body">Buddy</div>
               <div className="text-sm font-display font-semibold text-cocoa-text mt-1">{characterName}</div>
             </div>
@@ -103,10 +103,10 @@ export default function RoutineSetup() {
         </div>
       </MotionDiv>
 
-      <MotionDiv className="w-full max-w-sm rounded-[28px] border border-cocoa-300/15 bg-white/50/82 p-3 shadow-sm backdrop-blur-md mb-2.5 shrink-0 sm:p-4 sm:mb-3" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}>
+      <MotionDiv className="w-full max-w-sm rounded-[28px] border border-white/10 bg-[#7A4A28] p-3 shadow-sm backdrop-blur-md mb-2.5 shrink-0 sm:p-4 sm:mb-3" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}>
         <div className="text-center mb-2">
-          <div className="text-[11px] uppercase tracking-[0.16em] text-cocoa-50/55 font-body">Ready to begin</div>
-          <p className="hidden text-[13px] sm:block sm:text-sm text-cocoa-100/80 font-body mt-1">Start when you want the first step and timer to begin.</p>
+          <div className="text-[11px] uppercase tracking-[0.16em] text-cream-200/60 font-body">Ready to begin</div>
+          <p className="hidden text-[13px] sm:block sm:text-sm text-cream-200/70 font-body mt-1">Start when you want the first step and timer to begin.</p>
         </div>
         <MotionButton
           className="btn-primary w-full flex items-center justify-center gap-2 text-lg sm:text-xl"
@@ -117,13 +117,13 @@ export default function RoutineSetup() {
           Start Routine!
         </MotionButton>
         {!showBuilder && (
-          <button onClick={() => setShowBuilder(true)} className="mt-2.5 w-full h-11 rounded-2xl border border-cocoa-300/15 bg-white/60/85 hover:bg-white/70 transition-colors flex items-center justify-center gap-2 px-3">
-            <Settings2 className="w-4.5 h-4.5 text-cocoa-100/80" />
-            <span className="text-xs font-display font-semibold text-cocoa-text">Edit</span>
-            <ChevronDown className="w-4 h-4 text-cocoa-100/70" />
+          <button onClick={() => setShowBuilder(true)} className="mt-2.5 w-full h-11 rounded-2xl border border-white/15 bg-white/10 hover:bg-white/20 transition-colors flex items-center justify-center gap-2 px-3">
+            <Settings2 className="w-4.5 h-4.5 text-cream-200/70" />
+            <span className="text-xs font-display font-semibold text-cream-50">Edit</span>
+            <ChevronDown className="w-4 h-4 text-cream-200/70" />
           </button>
         )}
-        <MotionP className="hidden text-sm text-cocoa-50/65 mt-3 font-body text-center sm:block" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.35 }}>
+        <MotionP className="hidden text-sm text-cream-200/70 mt-3 font-body text-center sm:block" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.35 }}>
           Total time: {totalMinutes} minutes
         </MotionP>
       </MotionDiv>

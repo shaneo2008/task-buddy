@@ -112,11 +112,11 @@ export default function Settings() {
       </div>
 
       {/* Rewards Toggle */}
-      <div className="mx-2 mb-3 px-4 py-3 rounded-2xl border border-cocoa-300/15 bg-white/50 shadow-sm backdrop-blur-md shrink-0 sm:mb-4">
+      <div className="mx-2 mb-3 px-4 py-3 rounded-2xl border border-white/10 bg-[#7A4A28] shadow-sm backdrop-blur-md shrink-0 sm:mb-4">
         <div className="flex items-center justify-between">
           <div className="flex-1">
-            <h3 className="font-display font-semibold text-sm text-cocoa-text mb-0.5">Enable Rewards</h3>
-            <p className="text-xs text-cocoa-50 font-body">Show reward chest after completing routines</p>
+            <h3 className="font-display font-semibold text-sm text-cream-50 mb-0.5">Enable Rewards</h3>
+            <p className="text-xs text-cream-200/70 font-body">Show reward chest after completing routines</p>
           </div>
           <button
             onClick={handleToggleRewards}
@@ -141,10 +141,10 @@ export default function Settings() {
           onClick={handleAddReward}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
-          className="flex-1 rounded-2xl border border-peach-accent/25 bg-peach-accent/15 px-4 py-2.5 flex items-center justify-center gap-2 hover:bg-peach-accent/25 transition-colors"
+          className="flex-1 rounded-2xl border border-peach-accent bg-peach-accent px-4 py-2.5 flex items-center justify-center gap-2 hover:opacity-90 transition-opacity"
         >
-          <Plus className="w-4 h-4 text-peach-300" />
-          <span className="text-xs font-display font-semibold text-peach-300">Add Reward</span>
+          <Plus className="w-4 h-4 text-cocoa-text" />
+          <span className="text-xs font-display font-semibold text-cocoa-text">Add Reward</span>
         </MotionButton>
         {hasChanges && (
           <MotionButton
@@ -170,7 +170,7 @@ export default function Settings() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.02 }}
-              className="rounded-2xl border border-cocoa-300/15 bg-white/50 shadow-sm backdrop-blur-md overflow-hidden"
+              className="rounded-2xl border border-cocoa-300/15 bg-[#F6E5CC] shadow-sm backdrop-blur-md overflow-hidden"
             >
               {editingId === reward.id ? (
                 <div className="p-3 space-y-2">
@@ -230,6 +230,30 @@ export default function Settings() {
         >
           Reset to Defaults
         </button>
+      </div>
+
+      {/* About / Support */}
+      <div className="px-2 pt-2 pb-1 shrink-0 border-t border-white/10">
+        <div className="rounded-xl border border-white/10 bg-[#7A4A28] px-3 py-2 flex items-center gap-2">
+          <a
+            href="https://buymeacoffee.com/hello6y"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center gap-1.5 flex-1 rounded-xl border border-peach-accent bg-peach-accent px-3 py-1.5 hover:opacity-90 transition-opacity"
+          >
+            <span className="text-sm leading-none">☕</span>
+            <span className="text-[11px] font-display font-semibold text-cocoa-text">Support My Work</span>
+          </a>
+          <a
+            href="https://www.lovou.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center gap-1.5 flex-1 rounded-xl border border-white/15 bg-white/10 px-3 py-1.5 hover:bg-white/20 transition-colors"
+          >
+            <span className="text-sm leading-none">💛</span>
+            <span className="text-[11px] font-display font-semibold text-cream-50">Lovou</span>
+          </a>
+        </div>
       </div>
     </div>
   );

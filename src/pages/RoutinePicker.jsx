@@ -5,10 +5,10 @@ import Logo from '../components/Logo';
 const MotionButton = motion.button;
 
 const ROUTINES = [
-  { type: 'bedtime',  emoji: '🌙', label: 'Bedtime',  description: 'Wind down & get ready for sleep', color: '#A593F7', tint: 'rgba(165, 147, 247, 0.12)' },
-  { type: 'morning',  emoji: '🌅', label: 'Morning',  description: 'Start the day the right way',     color: '#E8A26B', tint: 'rgba(232, 162, 107, 0.12)' },
-  { type: 'homework', emoji: '📚', label: 'Homework', description: 'Focus up & get it done',          color: '#6FB9D8', tint: 'rgba(111, 185, 216, 0.12)' },
-  { type: 'custom',   emoji: '✏️', label: 'Custom',   description: 'Create your own routine',          color: '#7FC56A', tint: 'rgba(127, 197, 106, 0.12)' },
+  { type: 'bedtime',  emoji: '🌙', label: 'Bedtime',  description: 'Wind down & get ready for sleep', color: '#A593F7', tint: '#F6E5CC' },
+  { type: 'morning',  emoji: '🌅', label: 'Morning',  description: 'Start the day the right way',     color: '#E8A26B', tint: '#F6E5CC' },
+  { type: 'homework', emoji: '📚', label: 'Homework', description: 'Focus up & get it done',          color: '#6FB9D8', tint: '#F6E5CC' },
+  { type: 'custom',   emoji: '✏️', label: 'Custom',   description: 'Create your own routine',          color: '#7FC56A', tint: '#F6E5CC' },
 ];
 
 export default function RoutinePicker() {
@@ -49,7 +49,7 @@ export default function RoutinePicker() {
       {/* Routine Tiles */}
       <div className="relative w-full max-w-sm mx-auto flex-1 min-h-0 mb-2 flex items-center sm:mb-4">
         <div className="absolute inset-8 rounded-full bg-peach-accent/15 blur-3xl pointer-events-none" />
-        <div className="relative w-full rounded-[32px] border border-cocoa-300/15 bg-white/40 px-3 py-4 sm:px-4 sm:py-5 shadow-lg backdrop-blur-md overflow-hidden">
+        <div className="relative w-full rounded-[32px] border border-white/10 bg-[#7A4A28] px-3 py-4 sm:px-4 sm:py-5 shadow-lg backdrop-blur-md overflow-hidden">
           <div className="absolute inset-x-10 top-4 h-16 rounded-full bg-peach-100/20 blur-2xl pointer-events-none" />
           <div className="grid grid-cols-2 gap-2.5 sm:gap-4">
         {ROUTINES.map((routine, i) => (
@@ -62,10 +62,10 @@ export default function RoutinePicker() {
             whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.96 }}
             className="flex flex-col items-center px-3 py-3 rounded-[24px] shadow-md border transition-all min-h-[128px] justify-center sm:p-5 sm:rounded-[28px] sm:min-h-[170px]"
-            style={{ backgroundColor: routine.tint, borderColor: `${routine.color}40`, boxShadow: `0 8px 20px -12px ${routine.color}55` }}
+            style={{ backgroundColor: routine.tint, borderColor: `${routine.color}80`, boxShadow: `0 8px 20px -12px ${routine.color}55` }}
           >
             <div className="mb-1 text-[9px] uppercase tracking-[0.14em] text-cocoa-50 font-body sm:mb-2 sm:text-[10px]">Guided flow</div>
-            <div className="w-11 h-11 rounded-[16px] flex items-center justify-center mb-1.5 border border-cocoa-300/15 bg-white/50 text-[1.45rem] sm:w-14 sm:h-14 sm:rounded-2xl sm:mb-3 sm:text-3xl">
+            <div className="w-11 h-11 rounded-[16px] flex items-center justify-center mb-1.5 border border-white/20 bg-white/90 text-[1.45rem] sm:w-14 sm:h-14 sm:rounded-2xl sm:mb-3 sm:text-3xl">
               <span>{routine.emoji}</span>
             </div>
             <span className="font-display font-semibold text-cocoa-text text-[1rem] mb-0.5 sm:text-xl sm:mb-1">{routine.label}</span>
@@ -76,8 +76,8 @@ export default function RoutinePicker() {
         </div>
       </div>
 
-      <div className="max-w-sm mx-auto rounded-[24px] border border-cocoa-300/15 bg-white/50 px-3 py-2 shadow-sm backdrop-blur-md text-center shrink-0 sm:px-4 sm:py-3">
-        <p className="text-cocoa-100 text-[12px] font-body leading-snug sm:text-sm sm:leading-relaxed">Choose a ready-made path or create your own if tonight needs something specific.</p>
+      <div className="max-w-sm mx-auto rounded-[24px] border border-white/10 bg-[#7A4A28] px-3 py-2 shadow-sm backdrop-blur-md text-center shrink-0 sm:px-4 sm:py-3">
+        <p className="text-cream-200/70 text-[12px] font-body leading-snug sm:text-sm sm:leading-relaxed">Choose a ready-made path or create your own if tonight needs something specific.</p>
       </div>
 
     </div>

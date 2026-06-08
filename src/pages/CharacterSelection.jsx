@@ -72,19 +72,19 @@ export default function CharacterSelection() {
                   onClick={() => handleSelect(char.id)}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="relative flex h-full min-h-[24rem] w-full flex-col items-center px-3 py-3 bg-white/50 backdrop-blur-md rounded-[28px] shadow-md border border-cocoa-300/15 hover:border-peach-accent/40 transition-all overflow-visible sm:min-h-0 sm:p-6"
+                  className="relative flex h-full min-h-[24rem] w-full flex-col items-center px-3 py-3 bg-[#7A4A28] backdrop-blur-md rounded-[28px] shadow-md border border-white/10 hover:border-peach-accent/40 transition-all overflow-visible sm:min-h-0 sm:p-6"
                 >
-                  <div className="hidden self-start mb-2 rounded-full border border-cocoa-300/15 bg-white/40 px-3 py-1 text-[10px] uppercase tracking-[0.14em] text-cocoa-50 font-body sm:inline-flex sm:mb-3 sm:text-[11px]">
+                  <div className="hidden self-start mb-2 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[10px] uppercase tracking-[0.14em] text-cream-200/70 font-body sm:inline-flex sm:mb-3 sm:text-[11px]">
                     Tonight's guide
                   </div>
-                  <div className="relative mb-3 flex w-full flex-1 items-center justify-center rounded-[24px] bg-cream-200/40 border border-cocoa-300/10 overflow-visible min-h-[13.5rem] sm:mb-4 sm:min-h-0">
+                  <div className="relative mb-3 flex w-full flex-1 items-center justify-center rounded-[24px] bg-[#F6E5CC] border border-cocoa-300/15 overflow-visible min-h-[13.5rem] sm:mb-4 sm:min-h-0">
                     <PixelRexCharacter state="celebrating" characterId={char.id} size={170} className="shrink-0" />
                   </div>
-                  <span className="font-display font-semibold text-cocoa-text text-[1.45rem] mb-0.5 sm:text-2xl sm:mb-1">{char.name}</span>
-                  <span className="text-[13px] text-cocoa-100 text-center font-body leading-snug sm:text-sm">{char.trait}</span>
-                  <div className="mt-auto pt-3 w-full rounded-2xl border border-peach-accent/25 bg-peach-accent/15 px-4 py-2.5 flex items-center justify-between sm:mt-5 sm:pt-0 sm:py-3">
-                    <span className="text-xs font-display font-semibold text-peach-300">Choose {char.name}</span>
-                    <span className="text-peach-300 text-sm">→</span>
+                  <span className="font-display font-semibold text-cream-50 text-[1.45rem] mb-0.5 sm:text-2xl sm:mb-1">{char.name}</span>
+                  <span className="text-[13px] text-cream-200/70 text-center font-body leading-snug sm:text-sm">{char.trait}</span>
+                  <div className="mt-auto pt-3 w-full rounded-2xl border border-peach-accent bg-peach-accent px-4 py-2.5 flex items-center justify-between sm:mt-5 sm:pt-0 sm:py-3">
+                    <span className="text-xs font-display font-semibold text-cocoa-text">Choose {char.name}</span>
+                    <span className="text-cocoa-text text-sm">→</span>
                   </div>
                 </MotionButton>
               </div>
