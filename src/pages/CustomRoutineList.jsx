@@ -50,32 +50,32 @@ export default function CustomRoutineList() {
   };
 
   return (
-    <div data-buddy-scroll="true" className="h-full min-h-full flex flex-col px-1 py-1 text-cocoa-text overflow-hidden sm:py-2">
+    <div data-buddy-scroll="true" className="h-full min-h-full flex flex-col px-1 py-1 text-ink overflow-hidden sm:py-2">
       {/* Header */}
       <div className="flex items-center gap-2 mb-3 shrink-0 sm:mb-5">
         <button
           onClick={() => setScreen('picker')}
-          className="w-10 h-10 rounded-2xl bg-white/50/85 border border-cocoa-300/15 flex items-center justify-center text-cocoa-text hover:text-cocoa-text hover:bg-white/60 transition-colors"
+          className="w-10 h-10 rounded-2xl bg-surface border border-border-card flex items-center justify-center text-ink-muted hover:text-ink hover:bg-surface-card transition-colors shadow-soft"
         >
           <span className="text-sm">←</span>
         </button>
         <div className="w-10 h-10 rounded-2xl bg-[#7FC56A]/15 border border-[#7FC56A]/20 flex items-center justify-center">
           <span className="text-lg">✏️</span>
         </div>
-        <span className="font-display font-semibold text-cocoa-text text-sm tracking-[0.02em]">Custom Routines</span>
+        <span className="font-display font-semibold text-ink text-sm tracking-[0.02em]">Custom Routines</span>
       </div>
 
       {/* Title */}
       <div className="text-center mb-4 px-2 shrink-0 sm:mb-6 sm:px-4">
-        <h1 className="text-[1.6rem] leading-tight font-display font-bold text-cocoa-text mb-1 sm:text-3xl sm:mb-2">Your Routines</h1>
-        <p className="text-cocoa-100/75 text-[13px] font-body leading-snug sm:text-sm">Create and manage custom routines</p>
+        <h1 className="text-[1.6rem] leading-tight font-display font-bold text-ink mb-1 sm:text-3xl sm:mb-2">Your Routines</h1>
+        <p className="text-ink-muted text-[13px] font-body leading-snug sm:text-sm">Create and manage custom routines</p>
       </div>
 
       {/* Content */}
       <div className="relative w-full max-w-sm mx-auto flex-1 min-h-0 overflow-y-auto mb-2 sm:mb-4">
         {isLoading ? (
           <div className="text-center py-8">
-            <div className="text-sm text-cocoa-100/70 font-body animate-pulse">Loading routines...</div>
+            <div className="text-sm text-ink-muted font-body animate-pulse">Loading routines...</div>
           </div>
         ) : (
           <div className="space-y-2.5">
@@ -89,22 +89,22 @@ export default function CustomRoutineList() {
               >
                 <button
                   onClick={() => handleSelect(routine)}
-                  className="w-full flex items-center gap-3 px-4 py-4 rounded-[24px] border border-[#7FC56A]/25 bg-[#7FC56A]/8 hover:bg-[#7FC56A]/14 hover:border-[#7FC56A]/40 transition-all text-left shadow-sm"
+                  className="w-full flex items-center gap-3 px-4 py-4 rounded-[24px] border border-border-card bg-surface-card hover:bg-[#FAF3E8] hover:border-accent/30 transition-all text-left shadow-soft"
                 >
-                  <div className="w-12 h-12 rounded-[16px] flex items-center justify-center border border-cocoa-300/15 bg-white/50/55 text-2xl shrink-0">
+                  <div className="w-12 h-12 rounded-[16px] flex items-center justify-center border border-border-card bg-[#FAF3E8] text-2xl shrink-0">
                     {routine.emoji}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="font-display font-semibold text-cocoa-text text-base truncate">{routine.name}</div>
-                    <div className="text-xs text-cocoa-100/60 font-body mt-0.5">Tap to edit & run</div>
+                    <div className="font-display font-semibold text-ink text-base truncate">{routine.name}</div>
+                    <div className="text-xs text-ink-muted font-body mt-0.5">Tap to edit & run</div>
                   </div>
-                  <span className="text-cocoa-50/50 text-sm">→</span>
+                  <span className="text-ink-muted/50 text-sm">→</span>
                 </button>
 
                 {/* Delete button */}
                 <button
                   onClick={(e) => { e.stopPropagation(); setConfirmDelete(routine.id); }}
-                  className="absolute top-3 right-3 w-8 h-8 rounded-xl flex items-center justify-center text-cocoa-50/40 hover:text-red-400 hover:bg-red-400/10 transition-colors z-10"
+                  className="absolute top-3 right-3 w-8 h-8 rounded-xl flex items-center justify-center text-ink-muted/40 hover:text-red-400 hover:bg-red-50 transition-colors z-10"
                 >
                   <Trash2 className="w-3.5 h-3.5" />
                 </button>
@@ -114,7 +114,7 @@ export default function CustomRoutineList() {
             {routines.length === 0 && !isLoading && (
               <div className="text-center py-8">
                 <div className="text-4xl mb-3">✨</div>
-                <p className="text-sm text-cocoa-100/70 font-body leading-relaxed">No custom routines yet.<br />Create your first one below!</p>
+                <p className="text-sm text-ink-muted font-body leading-relaxed">No custom routines yet.<br />Create your first one below!</p>
               </div>
             )}
           </div>
@@ -127,7 +127,7 @@ export default function CustomRoutineList() {
           onClick={() => setShowCreate(true)}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.97 }}
-          className="w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl border border-dashed border-[#7FC56A]/30 bg-[#7FC56A]/8 hover:bg-[#7FC56A]/14 hover:border-[#7FC56A]/50 transition-all text-sm font-display font-semibold text-[#7FC56A]"
+          className="w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl border border-dashed border-border-card bg-surface-card hover:bg-[#FAF3E8] hover:border-accent/40 transition-all text-sm font-display font-semibold text-ink-muted hover:text-ink shadow-soft"
         >
           <PlusCircle className="w-5 h-5" />
           Create New Routine
@@ -145,17 +145,17 @@ export default function CustomRoutineList() {
             onClick={() => setShowCreate(false)}
           >
             <motion.div
-              className="bg-white/50/95 border border-cocoa-300/15 rounded-[28px] p-6 w-full max-w-xs shadow-lg text-cocoa-text"
+              className="bg-surface-card border border-border-card rounded-[28px] p-6 w-full max-w-xs shadow-soft text-ink"
               initial={{ scale: 0.85, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.85, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-[#7FC56A]/20 bg-[#7FC56A]/12 text-2xl">
+              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-border-card bg-[#FAF3E8] text-2xl">
                 {newEmoji}
               </div>
-              <h2 className="font-display font-bold text-cocoa-text text-lg mb-1 text-center">New Custom Routine</h2>
-              <p className="text-cocoa-100/75 text-sm text-center mb-4 font-body">Give it a name and pick an icon</p>
+              <h2 className="font-display font-bold text-ink text-lg mb-1 text-center">New Custom Routine</h2>
+              <p className="text-ink-muted text-sm text-center mb-4 font-body">Give it a name and pick an icon</p>
 
               <input
                 autoFocus
@@ -165,7 +165,7 @@ export default function CustomRoutineList() {
                 onKeyDown={(e) => e.key === 'Enter' && handleCreate()}
                 placeholder="e.g. Sports Night"
                 maxLength={24}
-                className="w-full bg-white/70 border-2 border-cocoa-300/20 rounded-2xl px-4 py-3 text-cocoa-text placeholder:text-cocoa-50 font-body text-base outline-none focus:border-peach-accent/50 mb-3 backdrop-blur-sm"
+                className="w-full bg-[#FAF3E8] border-2 border-border-card rounded-2xl px-4 py-3 text-ink placeholder:text-ink-muted/50 font-body text-base outline-none focus:border-accent/40 mb-3"
               />
 
               {/* Emoji picker */}
@@ -176,8 +176,8 @@ export default function CustomRoutineList() {
                     onClick={() => setNewEmoji(emoji)}
                     className={`w-10 h-10 rounded-xl flex items-center justify-center text-lg transition-all ${
                       newEmoji === emoji
-                        ? 'bg-[#7FC56A]/20 border-2 border-[#7FC56A]/50 scale-110'
-                        : 'bg-white/5 border border-white/8 hover:bg-white/10'
+                        ? 'bg-accent/20 border-2 border-accent/50 scale-110'
+                        : 'bg-[#FAF3E8] border border-border-card hover:bg-surface-card'
                     }`}
                   >
                     {emoji}
@@ -194,7 +194,7 @@ export default function CustomRoutineList() {
               </button>
               <button
                 onClick={() => { setShowCreate(false); setNewName(''); }}
-                className="w-full mt-2 text-sm text-cocoa-50/65 hover:text-cocoa-text py-2 font-body"
+                className="w-full mt-2 text-sm text-ink-muted hover:text-ink py-2 font-body"
               >
                 Cancel
               </button>
@@ -214,26 +214,26 @@ export default function CustomRoutineList() {
             onClick={() => setConfirmDelete(null)}
           >
             <motion.div
-              className="bg-white/50/95 border border-cocoa-300/15 rounded-[28px] p-6 w-full max-w-xs shadow-lg text-cocoa-text"
+              className="bg-surface-card border border-border-card rounded-[28px] p-6 w-full max-w-xs shadow-soft text-ink"
               initial={{ scale: 0.85, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.85, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-red-400/20 bg-red-400/12 text-2xl">
+              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-red-200 bg-red-50 text-2xl">
                 🗑️
               </div>
-              <h2 className="font-display font-bold text-cocoa-text text-lg mb-1 text-center">Delete Routine?</h2>
-              <p className="text-cocoa-100/75 text-sm text-center mb-4 font-body">This will remove the routine and all its saved tasks. This can't be undone.</p>
+              <h2 className="font-display font-bold text-ink text-lg mb-1 text-center">Delete Routine?</h2>
+              <p className="text-ink-muted text-sm text-center mb-4 font-body">This will remove the routine and all its saved tasks. This can't be undone.</p>
               <button
                 onClick={() => handleDelete(confirmDelete)}
-                className="w-full py-3 rounded-2xl bg-red-500/20 border border-red-400/30 text-red-300 font-display font-bold text-sm hover:bg-red-500/30 transition-colors"
+                className="w-full py-3 rounded-2xl bg-red-50 border border-red-200 text-red-500 font-display font-bold text-sm hover:bg-red-100 transition-colors"
               >
                 Delete
               </button>
               <button
                 onClick={() => setConfirmDelete(null)}
-                className="w-full mt-2 text-sm text-cocoa-50/65 hover:text-cocoa-text py-2 font-body"
+                className="w-full mt-2 text-sm text-ink-muted hover:text-ink py-2 font-body"
               >
                 Cancel
               </button>

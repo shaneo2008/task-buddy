@@ -6,6 +6,7 @@
 import { useEffect, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useRoutineStore } from './store/useRoutineStore';
+import { readFastPath, readCustomRoutines } from './store/localStore';
 import CharacterSelection from './pages/CharacterSelection';
 import RoutinePicker from './pages/RoutinePicker';
 import RoutineSetup from './pages/RoutineSetup';
@@ -52,6 +53,7 @@ export default function App() {
 
   // On mount: if the page was reloaded while a routine was running (mobile tab discard),
   // restart the interval from the persisted timerEndsAt.
+  // Also: if returning user with a completed run, fast-path to setup screen.
   useEffect(() => {
     const { screen: s, isRunning, timerEndsAt } = useRoutineStore.getState();
     if (s === 'player' && isRunning && timerEndsAt) {
@@ -60,6 +62,19 @@ export default function App() {
         useRoutineStore.getState().tick();
       } else {
         useRoutineStore.getState()._ensureInterval();
+      }
+      return;
+    }
+    if (s === 'selection') {
+      const { hasCompletedRun, lastBuddy, lastRoutine } = readFastPath();
+      if (hasCompletedRun && lastBuddy && lastRoutine) {
+        if (lastRoutine.startsWith('custom:')) {
+          const customId = lastRoutine.replace('custom:', '');
+          const exists = readCustomRoutines().some((r) => r.id === customId);
+          if (!exists) return;
+        }
+        useRoutineStore.getState().setSelectedCharacter(lastBuddy);
+        useRoutineStore.getState().setRoutine(lastRoutine);
       }
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
@@ -72,7 +87,7 @@ export default function App() {
   }, []);
 
   return (
-    <div ref={rootRef} className="relative h-[100dvh] min-h-0 bg-cream-gradient text-cocoa-text overflow-hidden">
+    <div ref={rootRef} className="relative h-[100dvh] min-h-0 bg-cream-gradient text-ink overflow-hidden">
       <div className="absolute inset-0 bg-cream-glow pointer-events-none" />
       <div className="relative max-w-md mx-auto flex h-full min-h-0 w-full flex-col px-3 py-2 sm:px-4 sm:py-6">
         <AnimatePresence mode="wait">

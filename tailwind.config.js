@@ -4,6 +4,20 @@ export default {
   theme: {
     extend: {
       colors: {
+        // ── 2026 design tokens ──────────────────────────────────────────
+        'bg-base':     '#FAF3E8',
+        surface: {
+          DEFAULT: '#F2E6D4',
+          card:    '#F2E6D4',
+        },
+        'border-card': '#E0CDB4',
+        ink: {
+          DEFAULT: '#4A3426',
+          muted:   '#8A7560',
+        },
+        accent:  '#E89B6F',
+        success: '#9CAF88',
+        // ── Legacy tokens (kept for backward compat) ────────────────────
         cream: {
           50:  '#FFFDF8',
           100: '#F6E5CC',
@@ -42,10 +56,11 @@ export default {
       boxShadow: {
         dream: '0 24px 64px -24px rgba(0, 0, 0, 0.65)',
         card:  '0 18px 48px -30px rgba(0, 0, 0, 0.7)',
+        soft:  '0 2px 8px rgba(74, 52, 38, 0.12)',
       },
       backgroundImage: {
-        'cream-gradient': 'linear-gradient(180deg, #FAF8F4 0%, #F4EDE0 50%, #EDE3D3 100%)',
-        'cream-glow':     'radial-gradient(ellipse at 50% 0%, rgba(240, 162, 117, 0.12) 0%, rgba(240, 162, 117, 0.04) 35%, transparent 72%)',
+        'cream-gradient': 'linear-gradient(180deg, #FAF3E8 0%, #F0E4CC 50%, #E8D8BA 100%)',
+        'cream-glow':     'radial-gradient(ellipse at 50% 0%, rgba(232, 155, 111, 0.12) 0%, rgba(232, 155, 111, 0.04) 35%, transparent 72%)',
       },
     },
   },

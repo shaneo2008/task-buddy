@@ -5,6 +5,7 @@ import { nanoid } from 'nanoid';
 import PixelRexCharacter from '../components/rex/PixelRexCharacter';
 import { useRoutineStore } from '../store/useRoutineStore';
 import { getTasksForRoutine } from '../store/taskLibrary';
+import { readFastPath } from '../store/localStore';
 import Logo from '../components/Logo';
 
 const TASK_COLORS = ['#9D8AAE', '#86A4B3', '#C89A63', '#B86F56', '#81906F', '#B68FA1'];
@@ -19,7 +20,7 @@ export default function RoutineSetup() {
   const [showPicker, setShowPicker] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const totalMinutes = tasks.reduce((sum, t) => sum + t.durationMinutes, 0);
-  const averageMinutes = tasks.length > 0 ? Math.round(totalMinutes / tasks.length) : 0;
+  const isFastPath = readFastPath().hasCompletedRun;
 
   const updateTaskDuration = useCallback((taskId, delta) => {
     setTasks(tasks.map((t) => t.id === taskId ? { ...t, durationMinutes: Math.max(1, Math.min(60, t.durationMinutes + delta)) } : t));
@@ -60,11 +61,11 @@ export default function RoutineSetup() {
   }, [saveRoutine]);
 
   return (
-    <div data-buddy-scroll="true" className={`w-full h-full min-h-0 flex flex-col items-center overflow-x-hidden overscroll-contain px-1 py-1 pb-4 text-cocoa-text sm:py-2 sm:pb-8 ${showBuilder ? 'overflow-y-auto' : 'overflow-hidden'}`}>
+    <div data-buddy-scroll="true" className={`w-full h-full min-h-0 flex flex-col items-center overflow-x-hidden overscroll-contain px-1 py-1 pb-4 text-ink sm:py-2 sm:pb-8 ${showBuilder ? 'overflow-y-auto' : 'overflow-hidden'}`}>
       <div className="w-full max-w-sm flex items-center gap-2 mb-3 shrink-0 sm:mb-5">
         <button
           onClick={() => setScreen(routineType.startsWith('custom:') ? 'customList' : 'picker')}
-          className="w-10 h-10 rounded-2xl bg-white/60 border border-cocoa-300/15 flex items-center justify-center text-cocoa-100 hover:text-cocoa-text hover:bg-white/80 transition-colors backdrop-blur-sm shadow-sm"
+          className="w-10 h-10 rounded-2xl bg-surface border border-border-card flex items-center justify-center text-ink-muted hover:text-ink hover:bg-surface-card transition-colors shadow-soft"
         >
           <span className="text-sm">←</span>
         </button>
@@ -72,66 +73,65 @@ export default function RoutineSetup() {
       </div>
 
       <MotionDiv className="text-center mb-2.5 shrink-0 sm:mb-3" initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
-        <div className="hidden text-[11px] uppercase tracking-[0.18em] text-cocoa-50/60 font-body mb-1.5 sm:block">Task Buddies</div>
-        <h1 className="font-display text-[1.5rem] sm:text-3xl font-bold text-cocoa-text mb-1 leading-tight">{characterName}'s {routineName}</h1>
-        <p className="hidden text-cocoa-100/75 font-body text-[13px] sm:block sm:text-sm leading-snug">Complete tasks to feed {characterName}.</p>
+        <h1 className="font-display text-[1.5rem] sm:text-3xl font-bold text-ink mb-1 leading-tight">{characterName}'s {routineName}</h1>
+        <p className="hidden text-ink-muted font-body text-[13px] sm:block sm:text-sm leading-snug">Complete tasks to feed {characterName}.</p>
       </MotionDiv>
 
       <MotionDiv className="relative w-full max-w-sm mb-2.5 shrink-0 sm:mb-3" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }}>
-        <div className="absolute inset-6 rounded-full bg-peach-accent/10 blur-3xl pointer-events-none" />
-        <div className="relative rounded-[32px] border border-white/10 bg-[#7A4A28] px-3 py-3.5 sm:px-6 sm:py-6 shadow-lg backdrop-blur-md overflow-hidden text-center">
-          <div className="absolute inset-x-10 top-4 h-16 rounded-full bg-white/[0.04] blur-2xl pointer-events-none" />
-          <div className="hidden items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[10px] uppercase tracking-[0.16em] text-cream-200/70 font-body shadow-sm backdrop-blur-md mb-3 sm:inline-flex sm:py-1.5 sm:text-[11px] sm:mb-4">
-            <span>Routine Preview</span>
-            <span className="text-cocoa-text">{tasks.length} tasks</span>
-          </div>
-          <PixelRexCharacter state="idle" size={132} className="mx-auto sm:[transform:scale(1)]" characterId={selectedCharacter} />
-          <div className="mt-2.5 grid grid-cols-3 gap-2">
-            <div className="rounded-2xl border border-cocoa-300/15 bg-[#F6E5CC] px-3 py-2">
-              <div className="text-[10px] uppercase tracking-[0.14em] text-cocoa-50/55 font-body">Total</div>
-              <div className="text-sm font-display font-semibold text-cocoa-text mt-1">{totalMinutes} min</div>
+        <div className="relative rounded-[32px] border border-border-card bg-surface-card px-3 py-3.5 sm:px-6 sm:py-6 shadow-soft overflow-hidden text-center">
+          <PixelRexCharacter state="idle" size={132} className="mx-auto" characterId={selectedCharacter} />
+          <div className="mt-2.5 grid grid-cols-2 gap-2">
+            <div className="rounded-2xl border border-border-card bg-[#FAF3E8] px-3 py-2">
+              <div className="text-[10px] uppercase tracking-[0.14em] text-ink-muted font-body">Total</div>
+              <div className="text-sm font-display font-semibold text-ink mt-1">{totalMinutes} min</div>
             </div>
-            <div className="rounded-2xl border border-cocoa-300/15 bg-[#F6E5CC] px-3 py-2">
-              <div className="text-[10px] uppercase tracking-[0.14em] text-cocoa-50/55 font-body">Average</div>
-              <div className="text-sm font-display font-semibold text-cocoa-text mt-1">{averageMinutes || 0} min</div>
-            </div>
-            <div className="rounded-2xl border border-cocoa-300/15 bg-[#F6E5CC] px-3 py-2">
-              <div className="text-[10px] uppercase tracking-[0.14em] text-cocoa-50/55 font-body">Buddy</div>
-              <div className="text-sm font-display font-semibold text-cocoa-text mt-1">{characterName}</div>
+            <div className="rounded-2xl border border-border-card bg-[#FAF3E8] px-3 py-2">
+              <div className="text-[10px] uppercase tracking-[0.14em] text-ink-muted font-body">Buddy</div>
+              <div className="text-sm font-display font-semibold text-ink mt-1">{characterName}</div>
             </div>
           </div>
         </div>
       </MotionDiv>
 
-      <MotionDiv className="w-full max-w-sm rounded-[28px] border border-white/10 bg-[#7A4A28] p-3 shadow-sm backdrop-blur-md mb-2.5 shrink-0 sm:p-4 sm:mb-3" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}>
-        <div className="text-center mb-2">
-          <div className="text-[11px] uppercase tracking-[0.16em] text-cream-200/60 font-body">Ready to begin</div>
-          <p className="hidden text-[13px] sm:block sm:text-sm text-cream-200/70 font-body mt-1">Start when you want the first step and timer to begin.</p>
-        </div>
+      <MotionDiv className="w-full max-w-sm rounded-[28px] border border-border-card bg-surface-card p-3 shadow-soft mb-2.5 shrink-0 sm:p-4 sm:mb-3" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}>
         <MotionButton
           className="btn-primary w-full flex items-center justify-center gap-2 text-lg sm:text-xl"
           onClick={startRoutine}
           whileTap={{ scale: 0.95 }} whileHover={{ scale: 1.02 }}
         >
           <Play className="w-6 h-6 fill-current" />
-          Start Routine!
+          Start Routine
         </MotionButton>
         {!showBuilder && (
-          <button onClick={() => setShowBuilder(true)} className="mt-2.5 w-full h-11 rounded-2xl border border-white/15 bg-white/10 hover:bg-white/20 transition-colors flex items-center justify-center gap-2 px-3">
-            <Settings2 className="w-4.5 h-4.5 text-cream-200/70" />
-            <span className="text-xs font-display font-semibold text-cream-50">Edit</span>
-            <ChevronDown className="w-4 h-4 text-cream-200/70" />
+          <button onClick={() => setShowBuilder(true)} className="mt-2.5 w-full h-11 rounded-2xl border border-border-card bg-[#FAF3E8] hover:bg-surface-card transition-colors flex items-center justify-center gap-2 px-3">
+            <Settings2 className="w-4.5 h-4.5 text-ink-muted" />
+            <span className="text-xs font-display font-semibold text-ink">Edit tasks</span>
+            <ChevronDown className="w-4 h-4 text-ink-muted" />
           </button>
         )}
-        <MotionP className="hidden text-sm text-cream-200/70 mt-3 font-body text-center sm:block" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.35 }}>
-          Total time: {totalMinutes} minutes
-        </MotionP>
+        {isFastPath && (
+          <div className="mt-3 flex items-center justify-center gap-4">
+            <button
+              onClick={() => setScreen('selection')}
+              className="text-[12px] font-body text-ink-muted hover:text-ink transition-colors underline-offset-2 hover:underline"
+            >
+              Change buddy
+            </button>
+            <span className="text-border-card text-xs">·</span>
+            <button
+              onClick={() => setScreen('picker')}
+              className="text-[12px] font-body text-ink-muted hover:text-ink transition-colors underline-offset-2 hover:underline"
+            >
+              Change routine
+            </button>
+          </div>
+        )}
       </MotionDiv>
 
       <AnimatePresence>
         {showBuilder && (
           <MotionDiv
-            className="glass-card-solid w-full max-w-sm p-3 text-cocoa-text mb-2.5 sm:p-4 sm:mb-4"
+            className="w-full max-w-sm rounded-[20px] border border-border-card bg-surface-card p-3 shadow-soft text-ink mb-2.5 sm:p-4 sm:mb-4"
             initial={{ opacity: 0, y: 20, height: 0 }}
             animate={{ opacity: 1, y: 0, height: 'auto' }}
             exit={{ opacity: 0, y: 10, height: 0 }}
@@ -139,13 +139,13 @@ export default function RoutineSetup() {
           >
             <div className="flex items-center justify-between mb-3 sm:mb-4">
               <div>
-                <h3 className="font-display text-lg sm:text-xl font-bold text-cocoa-text">{routineName} Routine</h3>
-                <p className="text-[13px] sm:text-sm text-cocoa-100/75 font-body">{tasks.length} tasks · {totalMinutes} min total</p>
+                <h3 className="font-display text-lg sm:text-xl font-bold text-ink">{routineName} Routine</h3>
+                <p className="text-[13px] sm:text-sm text-ink-muted font-body">{tasks.length} tasks · {totalMinutes} min total</p>
               </div>
-              <button onClick={() => setShowBuilder(false)} className="min-w-[92px] h-11 rounded-2xl border border-cocoa-300/15 bg-white/60/85 hover:bg-white/70 transition-colors flex items-center justify-center gap-2 px-3">
-                <Settings2 className="w-4.5 h-4.5 text-cocoa-100/80" />
-                <span className="text-xs font-display font-semibold text-cocoa-text">Edit</span>
-                <ChevronUp className="w-4 h-4 text-cocoa-100/70" />
+              <button onClick={() => setShowBuilder(false)} className="min-w-[92px] h-11 rounded-2xl border border-border-card bg-[#FAF3E8] hover:bg-surface-card transition-colors flex items-center justify-center gap-2 px-3">
+                <Settings2 className="w-4.5 h-4.5 text-ink-muted" />
+                <span className="text-xs font-display font-semibold text-ink">Edit</span>
+                <ChevronUp className="w-4 h-4 text-ink-muted" />
               </button>
             </div>
 
@@ -164,7 +164,7 @@ export default function RoutineSetup() {
               <div className="mt-3 flex gap-2">
                 <button
                   onClick={() => setShowPicker(true)}
-                  className="flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl border border-dashed border-white/20 hover:border-peach-accent/35 hover:bg-peach-accent/5 transition-colors text-sm font-display font-semibold text-cocoa-100/80 hover:text-peach-300"
+                  className="flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl border border-dashed border-border-card hover:border-accent/50 hover:bg-accent/5 transition-colors text-sm font-display font-semibold text-ink-muted hover:text-ink"
                 >
                   <PlusCircle className="w-4 h-4" />
                   Add task
@@ -172,13 +172,13 @@ export default function RoutineSetup() {
                 <button
                   onClick={handleSave}
                   disabled={isSaving}
-                  className="flex items-center justify-center gap-1.5 px-4 py-3 rounded-2xl border border-cocoa-300/15 bg-peach-accent/10 hover:bg-peach-accent/20 transition-colors text-sm font-display font-semibold text-peach-300 disabled:opacity-50"
+                  className="flex items-center justify-center gap-1.5 px-4 py-3 rounded-2xl border border-border-card bg-accent/10 hover:bg-accent/20 transition-colors text-sm font-display font-semibold text-ink disabled:opacity-50"
                 >
                   <Save className="w-4 h-4" />
                   {isSaving ? 'Saving...' : hasSavedRoutine ? 'Saved' : 'Save'}
                 </button>
               </div>
-              <p className="text-xs text-cocoa-50/65 text-center mt-2 font-body">Drag to reorder · Tap +/- to adjust time</p>
+              <p className="text-xs text-ink-muted text-center mt-2 font-body">Drag to reorder · Tap +/- to adjust time</p>
             </MotionDiv>
           </MotionDiv>
         )}
@@ -195,15 +195,15 @@ export default function RoutineSetup() {
           >
             <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setShowPicker(false)} />
             <MotionDiv
-              className="relative w-full max-w-md max-h-[70vh] bg-white/50 border-t border-cocoa-300/15 rounded-t-3xl shadow-2xl overflow-hidden flex flex-col"
+              className="relative w-full max-w-md max-h-[70vh] bg-surface-card border-t border-border-card rounded-t-3xl shadow-2xl overflow-hidden flex flex-col"
               initial={{ y: '100%' }}
               animate={{ y: 0 }}
               exit={{ y: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 300 }}
             >
-              <div className="flex items-center justify-between px-5 py-4 border-b border-white/8 shrink-0">
-                <h3 className="font-display font-bold text-lg text-cocoa-text">Add a Task</h3>
-                <button onClick={() => setShowPicker(false)} className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-cocoa-100 hover:text-cocoa-text transition-colors">
+              <div className="flex items-center justify-between px-5 py-4 border-b border-border-card shrink-0">
+                <h3 className="font-display font-bold text-lg text-ink">Add a Task</h3>
+                <button onClick={() => setShowPicker(false)} className="w-8 h-8 rounded-full bg-[#FAF3E8] flex items-center justify-center text-ink-muted hover:text-ink transition-colors">
                   <X className="w-4 h-4" />
                 </button>
               </div>
@@ -212,27 +212,27 @@ export default function RoutineSetup() {
                   <button
                     key={libTask.key}
                     onClick={() => addTaskFromLibrary(libTask)}
-                    className="w-full flex items-center gap-3 px-4 py-3 rounded-2xl border border-white/8 bg-white/60/70 hover:bg-white/70 hover:border-white/15 transition-colors text-left"
+                    className="w-full flex items-center gap-3 px-4 py-3 rounded-2xl border border-border-card bg-[#FAF3E8] hover:bg-surface-card hover:border-border-card transition-colors text-left"
                   >
                     <span className="text-2xl shrink-0">{libTask.emoji}</span>
                     <div className="flex-1 min-w-0">
-                      <div className="font-display font-semibold text-sm text-cocoa-text truncate">{libTask.label}</div>
-                      <div className="text-xs text-cocoa-50/60 font-body">{libTask.defaultMinutes} min</div>
+                      <div className="font-display font-semibold text-sm text-ink truncate">{libTask.label}</div>
+                      <div className="text-xs text-ink-muted font-body">{libTask.defaultMinutes} min</div>
                     </div>
-                    <PlusCircle className="w-5 h-5 text-cocoa-50/50 shrink-0" />
+                    <PlusCircle className="w-5 h-5 text-ink-muted/50 shrink-0" />
                   </button>
                 ))}
-                <div className="pt-2 border-t border-white/8">
+                <div className="pt-2 border-t border-border-card">
                   <button
                     onClick={() => { addBlankTask(); setShowPicker(false); }}
-                    className="w-full flex items-center gap-3 px-4 py-3 rounded-2xl border border-dashed border-white/15 hover:border-peach-accent/30 hover:bg-peach-accent/5 transition-colors text-left"
+                    className="w-full flex items-center gap-3 px-4 py-3 rounded-2xl border border-dashed border-border-card hover:border-accent/40 hover:bg-accent/5 transition-colors text-left"
                   >
                     <span className="text-2xl shrink-0">❓</span>
                     <div className="flex-1 min-w-0">
-                      <div className="font-display font-semibold text-sm text-cocoa-text">Custom Task</div>
-                      <div className="text-xs text-cocoa-50/60 font-body">Name it yourself</div>
+                      <div className="font-display font-semibold text-sm text-ink">Custom Task</div>
+                      <div className="text-xs text-ink-muted font-body">Name it yourself</div>
                     </div>
-                    <PlusCircle className="w-5 h-5 text-peach-300/60 shrink-0" />
+                    <PlusCircle className="w-5 h-5 text-accent/60 shrink-0" />
                   </button>
                 </div>
               </div>
@@ -265,7 +265,7 @@ function TaskBuilderItem({ task, onDurationChange, onDelete, onTitleChange }) {
           }}
           className="shrink-0 rounded-lg p-0.5 touch-none cursor-grab active:cursor-grabbing"
         >
-          <GripVertical className="w-4 h-4 text-cocoa-50/45" />
+          <GripVertical className="w-4 h-4 text-ink-muted/40" />
         </button>
         <span className="text-lg shrink-0">{task.itemEmoji}</span>
         <input
@@ -274,17 +274,17 @@ function TaskBuilderItem({ task, onDurationChange, onDelete, onTitleChange }) {
           onChange={(e) => onTitleChange(e.target.value)}
           onPointerDown={(e) => e.stopPropagation()}
           placeholder="Task name..."
-          className="flex-1 min-w-0 bg-transparent font-display font-semibold text-sm text-cocoa-text placeholder:text-cocoa-50/45 outline-none border-b border-transparent focus:border-white/20 truncate"
+          className="flex-1 min-w-0 bg-transparent font-display font-semibold text-sm text-ink placeholder:text-ink-muted/50 outline-none border-b border-transparent focus:border-border-card truncate"
         />
       </div>
       {/* Row 2 — duration stepper + delete, aligned right under the title */}
       <div className="flex items-center justify-end gap-1.5 pl-9">
-        <div className="flex items-center rounded-xl border border-cocoa-300/15 bg-white/60 overflow-hidden">
+        <div className="flex items-center rounded-xl border border-border-card bg-[#FAF3E8] overflow-hidden">
           <button
             onClick={(e) => { e.stopPropagation(); onDurationChange(-1); }}
             onPointerDown={(e) => e.stopPropagation()}
             disabled={task.durationMinutes <= 1}
-            className="w-8 h-8 flex items-center justify-center hover:bg-white/50 transition-colors disabled:opacity-30 text-cocoa-text"
+            className="w-8 h-8 flex items-center justify-center hover:bg-surface-card transition-colors disabled:opacity-30 text-ink"
           >
             <Minus className="w-3.5 h-3.5" />
           </button>
@@ -295,7 +295,7 @@ function TaskBuilderItem({ task, onDurationChange, onDelete, onTitleChange }) {
             onClick={(e) => { e.stopPropagation(); onDurationChange(1); }}
             onPointerDown={(e) => e.stopPropagation()}
             disabled={task.durationMinutes >= 60}
-            className="w-8 h-8 flex items-center justify-center hover:bg-white/50 transition-colors disabled:opacity-30 text-cocoa-text"
+            className="w-8 h-8 flex items-center justify-center hover:bg-surface-card transition-colors disabled:opacity-30 text-ink"
           >
             <Plus className="w-3.5 h-3.5" />
           </button>
@@ -303,7 +303,7 @@ function TaskBuilderItem({ task, onDurationChange, onDelete, onTitleChange }) {
         <button
           onClick={(e) => { e.stopPropagation(); onDelete(); }}
           onPointerDown={(e) => e.stopPropagation()}
-          className="shrink-0 w-8 h-8 rounded-xl flex items-center justify-center text-cocoa-50/50 hover:text-danger hover:bg-danger/10 transition-colors"
+          className="shrink-0 w-8 h-8 rounded-xl flex items-center justify-center text-ink-muted/50 hover:text-red-500 hover:bg-red-50 transition-colors"
         >
           <Trash2 className="w-3.5 h-3.5" />
         </button>

@@ -11,9 +11,20 @@ const ROUTINES = [
   { type: 'custom',   emoji: '✏️', label: 'Custom',   description: 'Create your own routine',          color: '#7FC56A', tint: '#F6E5CC' },
 ];
 
+function getTimeHighlight() {
+  const h = new Date().getHours();
+  const day = new Date().getDay(); // 0=Sun, 6=Sat
+  const isWeekday = day >= 1 && day <= 5;
+  if (h >= 18 || h < 5) return 'bedtime';
+  if (h >= 5 && h < 10) return 'morning';
+  if (isWeekday && h >= 14 && h < 18) return 'homework';
+  return null;
+}
+
 export default function RoutinePicker() {
   const { setRoutine, setScreen } = useRoutineStore();
   const routineCount = ROUTINES.length;
+  const timeHighlight = getTimeHighlight();
 
   const handleSelect = (type) => {
     if (type === 'custom') {
@@ -24,12 +35,12 @@ export default function RoutinePicker() {
   };
 
   return (
-    <div className="h-full min-h-full flex flex-col px-1 py-1 text-cocoa-text overflow-hidden sm:py-2">
+    <div className="h-full min-h-full flex flex-col px-1 py-1 text-ink overflow-hidden sm:py-2">
       {/* Header */}
       <div className="flex items-center gap-2 mb-3 shrink-0 sm:mb-5">
         <button
           onClick={() => setScreen('selection')}
-          className="w-10 h-10 rounded-2xl bg-white/60 border border-cocoa-300/15 flex items-center justify-center text-cocoa-100 hover:text-cocoa-text hover:bg-white/80 transition-colors backdrop-blur-sm shadow-sm"
+          className="w-10 h-10 rounded-2xl bg-surface border border-border-card flex items-center justify-center text-ink-muted hover:text-ink hover:bg-surface-card transition-colors shadow-soft"
         >
           <span className="text-sm">←</span>
         </button>
@@ -38,46 +49,48 @@ export default function RoutinePicker() {
 
       {/* Title */}
       <div className="text-center mb-4 px-2 shrink-0 sm:mb-6 sm:px-4">
-        <div className="inline-flex items-center gap-2 rounded-full border border-cocoa-300/15 bg-white/50 px-3 py-1 text-[10px] uppercase tracking-[0.16em] text-cocoa-50 font-body shadow-sm backdrop-blur-md mb-2 sm:py-1.5 sm:text-[11px] sm:mb-4">
-          <span>Routine Menu</span>
-          <span className="text-cocoa-text">{routineCount} paths</span>
-        </div>
-        <h1 className="text-[1.6rem] leading-tight font-display font-bold text-cocoa-text mb-1 sm:text-3xl sm:mb-2">Choose a Routine</h1>
-        <p className="text-cocoa-100 text-[13px] font-body leading-snug sm:text-sm sm:leading-normal">What are we doing today?</p>
+        <h1 className="text-[1.6rem] leading-tight font-display font-bold text-ink mb-1 sm:text-3xl sm:mb-2">Choose a Routine</h1>
+        <p className="text-ink-muted text-[13px] font-body leading-snug sm:text-sm sm:leading-normal">What are we doing today?</p>
       </div>
 
       {/* Routine Tiles */}
       <div className="relative w-full max-w-sm mx-auto flex-1 min-h-0 mb-2 flex items-center sm:mb-4">
-        <div className="absolute inset-8 rounded-full bg-peach-accent/15 blur-3xl pointer-events-none" />
-        <div className="relative w-full rounded-[32px] border border-white/10 bg-[#7A4A28] px-3 py-4 sm:px-4 sm:py-5 shadow-lg backdrop-blur-md overflow-hidden">
-          <div className="absolute inset-x-10 top-4 h-16 rounded-full bg-peach-100/20 blur-2xl pointer-events-none" />
+        <div className="relative w-full rounded-[32px] border border-border-card bg-surface px-3 py-4 sm:px-4 sm:py-5 shadow-soft">
           <div className="grid grid-cols-2 gap-2.5 sm:gap-4">
-        {ROUTINES.map((routine, i) => (
-          <MotionButton
-            key={routine.type}
-            onClick={() => handleSelect(routine.type)}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.08 }}
-            whileHover={{ scale: 1.04 }}
-            whileTap={{ scale: 0.96 }}
-            className="flex flex-col items-center px-3 py-3 rounded-[24px] shadow-md border transition-all min-h-[128px] justify-center sm:p-5 sm:rounded-[28px] sm:min-h-[170px]"
-            style={{ backgroundColor: routine.tint, borderColor: `${routine.color}80`, boxShadow: `0 8px 20px -12px ${routine.color}55` }}
-          >
-            <div className="mb-1 text-[9px] uppercase tracking-[0.14em] text-cocoa-50 font-body sm:mb-2 sm:text-[10px]">Guided flow</div>
-            <div className="w-11 h-11 rounded-[16px] flex items-center justify-center mb-1.5 border border-white/20 bg-white/90 text-[1.45rem] sm:w-14 sm:h-14 sm:rounded-2xl sm:mb-3 sm:text-3xl">
-              <span>{routine.emoji}</span>
-            </div>
-            <span className="font-display font-semibold text-cocoa-text text-[1rem] mb-0.5 sm:text-xl sm:mb-1">{routine.label}</span>
-            <span className="text-[12px] text-cocoa-100 text-center leading-snug font-body sm:text-sm sm:leading-tight">{routine.description}</span>
-          </MotionButton>
-        ))}
+            {ROUTINES.map((routine, i) => {
+              const isHighlighted = timeHighlight === routine.type;
+              return (
+                <MotionButton
+                  key={routine.type}
+                  onClick={() => handleSelect(routine.type)}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.08 }}
+                  whileHover={{ scale: 1.04 }}
+                  whileTap={{ scale: 0.96 }}
+                  className={`flex flex-col items-center px-3 py-3 rounded-[24px] bg-surface-card transition-all min-h-[128px] justify-center sm:p-5 sm:rounded-[28px] sm:min-h-[170px] ${
+                    isHighlighted
+                      ? 'border-2 border-accent shadow-soft'
+                      : 'border border-border-card'
+                  }`}
+                >
+                  <div className="w-11 h-11 rounded-[14px] flex items-center justify-center mb-1.5 border border-border-card bg-white text-[1.45rem] sm:w-14 sm:h-14 sm:rounded-2xl sm:mb-3 sm:text-3xl">
+                    <span>{routine.emoji}</span>
+                  </div>
+                  <span className="font-display font-semibold text-ink text-[1rem] mb-0.5 sm:text-xl sm:mb-1">{routine.label}</span>
+                  <span className="text-[12px] text-ink-muted text-center leading-snug font-body sm:text-sm sm:leading-tight">{routine.description}</span>
+                  {isHighlighted && (
+                    <span className="mt-1.5 text-[10px] font-body text-accent font-semibold uppercase tracking-wide">Suggested</span>
+                  )}
+                </MotionButton>
+              );
+            })}
           </div>
         </div>
       </div>
 
-      <div className="max-w-sm mx-auto rounded-[24px] border border-white/10 bg-[#7A4A28] px-3 py-2 shadow-sm backdrop-blur-md text-center shrink-0 sm:px-4 sm:py-3">
-        <p className="text-cream-200/70 text-[12px] font-body leading-snug sm:text-sm sm:leading-relaxed">Choose a ready-made path or create your own if tonight needs something specific.</p>
+      <div className="max-w-sm mx-auto rounded-[24px] border border-border-card bg-surface px-3 py-2 shadow-soft text-center shrink-0 sm:px-4 sm:py-3">
+        <p className="text-ink-muted text-[12px] font-body leading-snug sm:text-sm sm:leading-relaxed">Choose a ready-made path or create your own.</p>
       </div>
 
     </div>

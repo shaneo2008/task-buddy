@@ -124,30 +124,32 @@ export default function ActivePlayer() {
         : 'Paused. Resume whenever you are ready.';
 
   return (
-    <div className="h-full min-h-0 flex flex-col items-center px-3 pt-1.5 pb-3 sm:px-4 sm:pt-2 sm:pb-4 relative overflow-hidden text-cocoa-text">
+    <div className="h-full min-h-0 flex flex-col items-center px-3 pt-1.5 pb-3 sm:px-4 sm:pt-2 sm:pb-4 relative overflow-hidden text-ink">
       <div className="w-full max-w-sm min-h-0 flex-1 flex flex-col">
-        <div className="flex items-center justify-between gap-2 mb-2 z-10 shrink-0 sm:gap-3 sm:mb-3">
+        <div className="flex items-center gap-2 mb-2 z-10 shrink-0 sm:mb-3">
           <button
             onClick={handleCancelRoutine}
-            className="w-10 h-10 rounded-2xl bg-white/50/88 border border-cocoa-300/15 flex items-center justify-center text-cocoa-text hover:text-cocoa-text hover:bg-white/60 transition-colors shrink-0"
+            className="w-10 h-10 rounded-2xl bg-surface border border-border-card flex items-center justify-center text-ink-muted hover:text-ink hover:bg-surface-card transition-colors shrink-0 shadow-soft"
           >
             <span className="text-sm">✕</span>
           </button>
-          <div className="flex min-w-0 flex-1 justify-center">
-            <div className="inline-flex min-w-0 max-w-full items-center gap-2 rounded-full border border-cocoa-300/15 bg-white/50/88 px-2.5 py-1.5 shadow-sm backdrop-blur-md sm:gap-3 sm:px-4 sm:py-2">
-            <div className="flex gap-1.5 shrink-0 sm:gap-2">
-              {tasks.map((task, i) => (
-                <MotionDiv
-                  key={task.id}
-                  className="w-2.5 h-2.5 rounded-full"
-                  style={{ background: i < currentTaskIndex ? COMPLETED_TASK_COLOR : i === currentTaskIndex ? currentTask?.themeColor || COMPLETED_TASK_COLOR : 'rgba(255, 249, 238, 0.14)' }}
-                  animate={i === currentTaskIndex ? { scale: [1, 1.28, 1], transition: { duration: 1.5, repeat: Infinity } } : {}}
-                />
-              ))}
+          <div className="flex-1 flex flex-col gap-1 min-w-0">
+            <div className="flex justify-between text-[11px] font-body text-ink-muted mb-0.5">
+              <span className="truncate">{routineName}</span>
+              <span className="shrink-0 ml-2">Task {currentTaskIndex + 1} of {tasks.length}</span>
             </div>
-            <div className="hidden w-px h-4 bg-white/10 sm:block" />
-            <div className="hidden min-w-0 truncate text-[10px] uppercase tracking-[0.16em] text-cocoa-50/65 font-body sm:block sm:text-[11px]">{routineName}</div>
-            <div className="text-[11px] font-display font-semibold text-cocoa-text whitespace-nowrap sm:text-xs">Task {currentTaskIndex + 1} of {tasks.length}</div>
+            <div className="flex gap-1 w-full">
+              {tasks.map((task, i) => {
+                const isCompleted = i < currentTaskIndex;
+                const isCurrent = i === currentTaskIndex;
+                const fillPct = isCurrent && totalTime > 0 ? ((totalTime - timeLeft) / totalTime) * 100 : 0;
+                return (
+                  <div key={task.id} className="relative flex-1 h-1.5 rounded-full bg-border-card overflow-hidden">
+                    {isCompleted && <div className="absolute inset-0 bg-success rounded-full" />}
+                    {isCurrent && <div className="absolute inset-y-0 left-0 bg-accent rounded-full transition-all duration-500" style={{ width: `${fillPct}%` }} />}
+                  </div>
+                );
+              })}
             </div>
           </div>
           <div className="w-10 h-10 shrink-0" />
@@ -162,33 +164,30 @@ export default function ActivePlayer() {
             exit={{ opacity: 0, y: -18, scale: 0.96 }}
             transition={{ duration: 0.35, ease: 'easeOut' }}
           >
-            <div className="hidden items-center gap-2 rounded-full border border-cocoa-300/15 bg-white/5 px-3 py-1 text-[11px] font-body text-cocoa-100/75 mb-2 sm:inline-flex sm:text-xs sm:mb-3">
+            <div className="hidden items-center gap-2 rounded-full border border-border-card bg-surface px-3 py-1 text-[11px] font-body text-ink-muted mb-2 sm:inline-flex sm:text-xs sm:mb-3">
               <span>{currentTask?.itemEmoji}</span>
               <span>{taskDurationLabel}</span>
               {tasksRemaining > 0 ? <span>· {tasksRemaining} left after this</span> : <span>· final step</span>}
             </div>
-            <h2
-              className="font-display text-[1.55rem] sm:text-[2rem] font-bold text-center mb-1 leading-tight text-cocoa-text"
-            >
+            <h2 className="font-display text-[1.55rem] sm:text-[2rem] font-bold text-center mb-1 leading-tight text-ink">
               {currentTask?.title}
             </h2>
-            <p className="text-[13px] sm:text-sm font-body text-cocoa-100/80 leading-snug sm:leading-relaxed px-3 sm:px-5 max-w-[20rem] mx-auto">
+            <p className="text-[13px] sm:text-sm font-body text-ink-muted leading-snug sm:leading-relaxed px-3 sm:px-5 max-w-[20rem] mx-auto">
               {instructionText}
             </p>
           </MotionDiv>
         </AnimatePresence>
 
         <div className="relative z-10 mb-3 flex flex-1 min-h-0 items-center justify-center sm:mb-4">
-          <div className="absolute inset-8 rounded-full bg-peach-accent/10 blur-3xl pointer-events-none" />
-          <div className="relative w-full rounded-[32px] border border-cocoa-300/15 bg-gradient-to-b from-[#221710]/78 to-[#140e0a]/90 px-3 py-3.5 sm:px-6 sm:py-6 shadow-lg backdrop-blur-md flex items-center justify-center overflow-hidden">
-            <div className="absolute inset-x-10 top-5 h-16 rounded-full bg-white/[0.04] blur-2xl pointer-events-none" />
+          <div className="absolute inset-8 rounded-full bg-accent/8 blur-3xl pointer-events-none" />
+          <div className="relative w-full rounded-[32px] border border-border-card bg-surface-card px-3 py-3.5 sm:px-6 sm:py-6 shadow-soft flex items-center justify-center overflow-hidden">
 
-            <div className="absolute top-3 left-3 rounded-full border border-cocoa-300/15 bg-white/50/92 px-2.5 py-1 text-[10px] uppercase tracking-[0.14em] text-cocoa-50/65 font-body sm:top-4 sm:left-4 sm:px-3 sm:py-1.5 sm:text-[11px] sm:tracking-[0.16em]">
+            <div className="absolute top-3 left-3 rounded-full border border-border-card bg-[#FAF3E8] px-2.5 py-1 text-[10px] uppercase tracking-[0.14em] text-ink-muted font-body sm:top-4 sm:left-4 sm:px-3 sm:py-1.5 sm:text-[11px] sm:tracking-[0.16em]">
               {isHungry ? 'Reward time' : isEatingSequence ? 'Celebrating' : isRunning ? 'In progress' : 'Paused'}
             </div>
 
-            <div className="absolute top-3 right-3 z-20 min-w-[62px] rounded-2xl border border-cocoa-300/15 bg-white/50/94 px-2.5 py-1.5 text-center shadow-sm sm:top-4 sm:right-4 sm:min-w-[68px] sm:px-3 sm:py-2">
-              <div className="text-[9px] uppercase tracking-[0.12em] text-cocoa-50/55 font-body mb-0.5 sm:text-[10px] sm:tracking-[0.14em]">Next treat</div>
+            <div className="absolute top-3 right-3 z-20 min-w-[62px] rounded-2xl border border-border-card bg-[#FAF3E8] px-2.5 py-1.5 text-center shadow-soft sm:top-4 sm:right-4 sm:min-w-[68px] sm:px-3 sm:py-2">
+              <div className="text-[9px] uppercase tracking-[0.12em] text-ink-muted font-body mb-0.5 sm:text-[10px] sm:tracking-[0.14em]">Next treat</div>
               <AnimatePresence mode="wait">
               {!isItemHidden && (
                   <MotionDiv
@@ -217,12 +216,14 @@ export default function ActivePlayer() {
             <AnimatePresence>
               {isHungry && !isEatingSequence && (
                 <MotionDiv
-                  className="absolute top-14 left-1/2 -translate-x-1/2 bg-white/50/94 border border-cocoa-300/15 rounded-2xl px-3 py-1.5 text-center z-20 shadow-sm sm:top-16 sm:px-4 sm:py-2"
+                  className="absolute top-12 inset-x-0 flex justify-center z-20 sm:top-14"
                   initial={{ opacity: 0, y: 10, scale: 0.8 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: -10, scale: 0.8 }}
                 >
-                  <p className="font-display text-[13px] sm:text-sm font-semibold text-cocoa-text whitespace-nowrap">Feed me!</p>
+                  <div className="bg-[#FAF3E8] border border-border-card rounded-2xl px-3 py-1.5 shadow-soft">
+                    <p className="font-display text-[13px] sm:text-sm font-semibold text-ink whitespace-nowrap">All done? Come feed me! 🐾</p>
+                  </div>
                 </MotionDiv>
               )}
             </AnimatePresence>
@@ -252,12 +253,9 @@ export default function ActivePlayer() {
               className="btn-coral w-full text-lg sm:text-xl z-10 mb-3 shrink-0"
               onClick={handleFeed}
               initial={{ opacity: 0, y: 30, scale: 0.8 }}
-              animate={{
-                opacity: 1, y: 0, scale: 1,
-                boxShadow: ['0 6px 18px rgba(184, 111, 86, 0.28)', '0 10px 32px rgba(184, 111, 86, 0.42)', '0 6px 18px rgba(184, 111, 86, 0.28)'],
-              }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 30, scale: 0.8 }}
-              transition={{ boxShadow: { duration: 1.8, repeat: Infinity }, default: { duration: 0.3, type: 'spring' } }}
+              transition={{ duration: 0.3, type: 'spring' }}
               whileTap={{ scale: 0.92 }}
             >
               Feed {characterName} {currentTask?.itemEmoji}
@@ -282,23 +280,23 @@ export default function ActivePlayer() {
         </AnimatePresence>
 
         {!isEatingSequence && (
-          <div className="mt-auto z-10 shrink-0 rounded-[28px] border border-white/10 bg-[#7A4A28] p-2.5 sm:p-3 shadow-sm backdrop-blur-md">
-            <div className="grid grid-cols-2 gap-2.5 sm:gap-3">
-              {isWaiting && (
+          <div className="mt-auto z-10 shrink-0 flex flex-col items-center gap-1.5">
+            {isWaiting && (
+              <div className="w-full rounded-[28px] border border-border-card bg-surface-card p-2.5 sm:p-3 shadow-soft">
                 <button
                   onClick={isRunning ? pauseRoutine : resumeRoutine}
-                  className="bg-white/60 border border-cocoa-300/15 rounded-2xl py-2.5 sm:py-3 font-display font-semibold text-sm text-cocoa-text hover:bg-[#ecd9c6] active:bg-[#dfc4a8] transition-colors"
+                  className="w-full bg-[#FAF3E8] border border-border-card rounded-2xl py-2.5 sm:py-3 font-display font-semibold text-sm text-ink hover:bg-surface-card active:bg-border-card/30 transition-colors"
                 >
                   {isRunning ? 'Pause' : 'Resume'}
                 </button>
-              )}
-              <button
-                onClick={skipTask}
-                className={`${!isWaiting ? 'col-span-2' : ''} bg-white/60 border border-cocoa-300/15 rounded-2xl py-2.5 sm:py-3 font-display font-semibold text-sm text-cocoa-text hover:bg-[#ecd9c6] active:bg-[#dfc4a8] transition-colors`}
-              >
-                Skip
-              </button>
-            </div>
+              </div>
+            )}
+            <button
+              onClick={skipTask}
+              className="py-1.5 text-xs font-body text-ink-muted hover:text-ink transition-colors"
+            >
+              Skip this task
+            </button>
           </div>
         )}
       </div>

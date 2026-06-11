@@ -85,7 +85,7 @@ export default function Settings() {
   };
 
   return (
-    <div className="h-full min-h-0 flex flex-col px-1 py-1 text-cocoa-text overflow-hidden sm:py-2">
+    <div className="h-full min-h-0 flex flex-col px-1 py-1 text-ink overflow-hidden sm:py-2">
       {/* Header */}
       <div className="flex items-center justify-between gap-2 mb-3 shrink-0 sm:mb-5">
         <div className="flex items-center gap-2">
@@ -95,38 +95,38 @@ export default function Settings() {
           onClick={() => setScreen('selection')}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="w-10 h-10 rounded-2xl bg-white/60 border border-cocoa-300/15 shadow-sm flex items-center justify-center hover:bg-white/80 transition-colors backdrop-blur-sm"
+          className="w-10 h-10 rounded-2xl bg-surface border border-border-card shadow-soft flex items-center justify-center hover:bg-surface-card transition-colors"
         >
-          <X className="w-5 h-5 text-cocoa-100" />
+          <X className="w-5 h-5 text-ink-muted" />
         </MotionButton>
       </div>
 
       {/* Title */}
       <div className="text-center mb-3 px-2 shrink-0 sm:mb-6 sm:px-4">
-        <h1 className="text-[1.45rem] leading-tight font-display font-bold text-cocoa-text mb-1 sm:text-3xl sm:mb-2">
+        <h1 className="text-[1.45rem] leading-tight font-display font-bold text-ink mb-1 sm:text-3xl sm:mb-2">
           Manage Rewards
         </h1>
-        <p className="max-w-[18rem] mx-auto text-cocoa-100 text-[13px] font-body leading-snug sm:max-w-none sm:text-sm sm:leading-normal">
+        <p className="max-w-[18rem] mx-auto text-ink-muted text-[13px] font-body leading-snug sm:max-w-none sm:text-sm sm:leading-normal">
           Customize the rewards your child can earn after completing tasks
         </p>
       </div>
 
       {/* Rewards Toggle */}
-      <div className="mx-2 mb-3 px-4 py-3 rounded-2xl border border-white/10 bg-[#7A4A28] shadow-sm backdrop-blur-md shrink-0 sm:mb-4">
+      <div className="mx-2 mb-3 px-4 py-3 rounded-2xl border border-border-card bg-surface-card shadow-soft shrink-0 sm:mb-4">
         <div className="flex items-center justify-between">
           <div className="flex-1">
-            <h3 className="font-display font-semibold text-sm text-cream-50 mb-0.5">Enable Rewards</h3>
-            <p className="text-xs text-cream-200/70 font-body">Show reward chest after completing routines</p>
+            <h3 className="font-display font-semibold text-sm text-ink mb-0.5">Enable Rewards</h3>
+            <p className="text-xs text-ink-muted font-body">Show reward chest after completing routines</p>
           </div>
           <button
             onClick={handleToggleRewards}
             className={`relative w-14 h-8 rounded-full transition-all shadow-inner ${
-              rewardsEnabled ? 'bg-olive-200' : 'bg-cocoa-100/40'
+              rewardsEnabled ? 'bg-success' : 'bg-border-card'
             }`}
           >
             <span
-              className={`absolute top-1 left-1 w-6 h-6 rounded-full shadow-md transition-all flex items-center justify-center text-xs ${
-                rewardsEnabled ? 'translate-x-6 bg-olive-300' : 'translate-x-0 bg-cocoa-50'
+              className={`absolute top-1 left-1 w-6 h-6 rounded-full shadow-md transition-all flex items-center justify-center text-xs font-bold ${
+                rewardsEnabled ? 'translate-x-6 bg-white text-success' : 'translate-x-0 bg-white text-ink-muted'
               }`}
             >
               {rewardsEnabled ? '✓' : '✕'}
@@ -141,10 +141,10 @@ export default function Settings() {
           onClick={handleAddReward}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
-          className="flex-1 rounded-2xl border border-peach-accent bg-peach-accent px-4 py-2.5 flex items-center justify-center gap-2 hover:opacity-90 transition-opacity"
+          className="flex-1 rounded-2xl bg-accent px-4 py-2.5 flex items-center justify-center gap-2 hover:opacity-90 transition-opacity shadow-soft"
         >
-          <Plus className="w-4 h-4 text-cocoa-text" />
-          <span className="text-xs font-display font-semibold text-cocoa-text">Add Reward</span>
+          <Plus className="w-4 h-4 text-ink" />
+          <span className="text-xs font-display font-semibold text-ink">Add Reward</span>
         </MotionButton>
         {hasChanges && (
           <MotionButton
@@ -153,10 +153,10 @@ export default function Settings() {
             animate={{ opacity: 1, scale: 1 }}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className="flex-1 rounded-2xl border border-green-500/20 bg-green-500/10 px-4 py-2.5 flex items-center justify-center gap-2 hover:bg-green-500/15 transition-colors"
+            className="flex-1 rounded-2xl border border-border-card bg-success/20 px-4 py-2.5 flex items-center justify-center gap-2 hover:bg-success/30 transition-colors"
           >
-            <Save className="w-4 h-4 text-green-400" />
-            <span className="text-xs font-display font-semibold text-green-400">Save Changes</span>
+            <Save className="w-4 h-4 text-success" />
+            <span className="text-xs font-display font-semibold text-ink">Save Changes</span>
           </MotionButton>
         )}
       </div>
@@ -170,27 +170,27 @@ export default function Settings() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.02 }}
-              className="rounded-2xl border border-cocoa-300/15 bg-[#F6E5CC] shadow-sm backdrop-blur-md overflow-hidden"
+              className="rounded-2xl border border-border-card bg-surface-card shadow-soft overflow-hidden"
             >
               {editingId === reward.id ? (
                 <div className="p-3 space-y-2">
                   <textarea
                     value={editText}
                     onChange={(e) => setEditText(e.target.value)}
-                    className="w-full bg-white/60 border border-cocoa-300/20 rounded-xl px-3 py-2 text-cocoa-text text-sm font-body resize-none focus:outline-none focus:border-peach-accent/40"
+                    className="w-full bg-[#FAF3E8] border border-border-card rounded-xl px-3 py-2 text-ink text-sm font-body resize-none focus:outline-none focus:border-accent/40"
                     rows={2}
                     autoFocus
                   />
                   <div className="flex gap-2">
                     <button
                       onClick={handleSaveEdit}
-                      className="flex-1 rounded-xl bg-peach-accent/15 border border-peach-accent/25 px-3 py-2 text-xs font-display font-semibold text-peach-300 hover:bg-peach-accent/25 transition-colors"
+                      className="flex-1 rounded-xl bg-accent/15 border border-accent/25 px-3 py-2 text-xs font-display font-semibold text-ink hover:bg-accent/25 transition-colors"
                     >
                       Save
                     </button>
                     <button
                       onClick={handleCancelEdit}
-                      className="flex-1 rounded-xl bg-white/40 border border-cocoa-300/20 px-3 py-2 text-xs font-display font-semibold text-cocoa-100 hover:bg-white/60 transition-colors"
+                      className="flex-1 rounded-xl bg-[#FAF3E8] border border-border-card px-3 py-2 text-xs font-display font-semibold text-ink-muted hover:bg-surface-card transition-colors"
                     >
                       Cancel
                     </button>
@@ -199,18 +199,18 @@ export default function Settings() {
               ) : (
                 <div className="flex items-center gap-3 p-3">
                   <div className="flex-1 min-w-0">
-                    <p className="text-cocoa-text text-sm font-body leading-snug">{reward.text}</p>
+                    <p className="text-ink text-sm font-body leading-snug">{reward.text}</p>
                   </div>
                   <div className="flex gap-1 shrink-0">
                     <button
                       onClick={() => handleStartEdit(reward)}
-                      className="w-8 h-8 rounded-xl bg-white/40 border border-cocoa-300/20 flex items-center justify-center hover:bg-white/60 transition-colors"
+                      className="w-8 h-8 rounded-xl bg-[#FAF3E8] border border-border-card flex items-center justify-center hover:bg-surface-card transition-colors"
                     >
-                      <span className="text-cocoa-100 text-xs">✏️</span>
+                      <span className="text-ink-muted text-xs">✏️</span>
                     </button>
                     <button
                       onClick={() => handleDeleteReward(reward.id)}
-                      className="w-8 h-8 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center hover:bg-red-500/15 transition-colors"
+                      className="w-8 h-8 rounded-xl bg-red-50 border border-red-200 flex items-center justify-center hover:bg-red-100 transition-colors"
                     >
                       <Trash2 className="w-3.5 h-3.5 text-red-400" />
                     </button>
@@ -223,35 +223,35 @@ export default function Settings() {
       </div>
 
       {/* Reset Button */}
-      <div className="px-2 pt-3 shrink-0 border-t border-white/10">
+      <div className="px-2 pt-3 shrink-0 border-t border-border-card">
         <button
           onClick={handleReset}
-          className="w-full rounded-2xl border border-red-500/20 bg-red-500/10 px-4 py-2.5 text-xs font-display font-semibold text-red-400 hover:bg-red-500/15 transition-colors"
+          className="w-full rounded-2xl border border-border-card bg-[#FAF3E8] px-4 py-2.5 text-xs font-display font-semibold text-ink-muted hover:text-red-400 hover:border-red-200 hover:bg-red-50 transition-colors"
         >
           Reset to Defaults
         </button>
       </div>
 
       {/* About / Support */}
-      <div className="px-2 pt-2 pb-1 shrink-0 border-t border-white/10">
-        <div className="rounded-xl border border-white/10 bg-[#7A4A28] px-3 py-2 flex items-center gap-2">
+      <div className="px-2 pt-2 pb-1 shrink-0 border-t border-border-card">
+        <div className="rounded-xl border border-border-card bg-surface-card px-3 py-2 flex items-center gap-2">
           <a
             href="https://buymeacoffee.com/hello6y"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center gap-1.5 flex-1 rounded-xl border border-peach-accent bg-peach-accent px-3 py-1.5 hover:opacity-90 transition-opacity"
+            className="flex items-center justify-center gap-1.5 flex-1 rounded-xl bg-accent px-3 py-1.5 hover:opacity-90 transition-opacity shadow-soft"
           >
             <span className="text-sm leading-none">☕</span>
-            <span className="text-[11px] font-display font-semibold text-cocoa-text">Support My Work</span>
+            <span className="text-[11px] font-display font-semibold text-ink">Support My Work</span>
           </a>
           <a
             href="https://www.lovou.app/"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center gap-1.5 flex-1 rounded-xl border border-white/15 bg-white/10 px-3 py-1.5 hover:bg-white/20 transition-colors"
+            className="flex items-center justify-center gap-1.5 flex-1 rounded-xl border border-border-card bg-[#FAF3E8] px-3 py-1.5 hover:bg-surface-card transition-colors"
           >
             <span className="text-sm leading-none">💛</span>
-            <span className="text-[11px] font-display font-semibold text-cream-50">Lovou</span>
+            <span className="text-[11px] font-display font-semibold text-ink">Lovou</span>
           </a>
         </div>
       </div>

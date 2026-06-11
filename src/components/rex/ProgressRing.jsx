@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 
-const IMPATIENT_COLOR = '#B86F56';
+const ACCENT_COLOR = '#E89B6F';
 const MotionCircle = motion.circle;
 const MotionSpan = motion.span;
 
@@ -23,14 +23,14 @@ export default function ProgressRing({ timeLeft, totalTime, themeColor, size = 2
         <circle
           cx={size / 2} cy={size / 2} r={radius}
           fill="none"
-          stroke={isImpatient ? undefined : 'rgba(232, 220, 200, 0.3)'}
+          stroke={isImpatient ? undefined : 'rgba(232, 155, 111, 0.18)'}
           strokeWidth={strokeWidth}
           className={isImpatient ? 'ring-impatient' : ''}
         />
         <MotionCircle
           cx={size / 2} cy={size / 2} r={radius}
           fill="none"
-          stroke={isImpatient ? IMPATIENT_COLOR : themeColor}
+          stroke={ACCENT_COLOR}
           strokeWidth={strokeWidth}
           strokeLinecap="round"
           strokeDasharray={circumference}
@@ -55,18 +55,18 @@ export default function ProgressRing({ timeLeft, totalTime, themeColor, size = 2
         {children}
         <MotionSpan
           className="font-display text-2xl font-bold leading-none"
-          style={{ color: isImpatient ? IMPATIENT_COLOR : themeColor }}
+          style={{ color: ACCENT_COLOR }}
           animate={isUrgent ? { scale: [1, 1.1, 1], transition: { duration: 0.5, repeat: Infinity } } : { scale: 1 }}
         >
           {timeDisplay}
         </MotionSpan>
         {isImpatient && (
           <MotionSpan
-            className="text-xs font-body font-semibold text-cream-300/75 mt-0.5"
+            className="text-xs font-body font-semibold text-ink-muted mt-0.5"
             initial={{ opacity: 0, y: 5 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            Time's up!
+            Ready when you are 🐾
           </MotionSpan>
         )}
       </div>

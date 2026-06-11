@@ -6,6 +6,8 @@ import {
   writeSavedRoutineTasks,
   readCustomRoutineTasks,
   writeCustomRoutineTasks,
+  writeFastPath,
+  markCompletedRun,
 } from './localStore';
 
 /*
@@ -93,6 +95,7 @@ export const useRoutineStore = create(
       resolved = isCustomSaved ? [] : getDefaultTasksForType(type);
     }
 
+    writeFastPath({ buddy: get().selectedCharacter, routine: type });
     set({
       tasks: resolved,
       routineName: displayName,
@@ -181,6 +184,7 @@ export const useRoutineStore = create(
     const nextIndex = currentTaskIndex + 1;
     if (nextIndex >= tasks.length) {
       if (timerInterval) clearInterval(timerInterval);
+      markCompletedRun();
       set({ screen: 'complete', rexState: 'celebrating', isRunning: false, timerInterval: null, timerEndsAt: null });
     } else {
       const nextTask = tasks[nextIndex];

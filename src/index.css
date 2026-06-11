@@ -10,8 +10,8 @@ html, body, #root {
 
 body {
   font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
-  background: #FAF8F4;
-  color: #24130D;
+  background: #FAF3E8;
+  color: #4A3426;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overscroll-behavior: none;
@@ -30,71 +30,54 @@ button { font-family: inherit; }
 
 /* ── Buttons ──────────────────────────────── */
 .btn-primary {
-  background: linear-gradient(135deg, #F0A275 0%, #E8956A 100%);
-  color: #24130D;
-  font-family: 'Nunito', 'DM Sans', sans-serif;
-  font-weight: 800;
+  background: #E89B6F;
+  color: #4A3426;
+  font-weight: 700;
   font-size: 1.0625rem;
   letter-spacing: 0.01em;
   border: none;
   border-radius: 1rem;
   padding: 0.875rem 1.25rem;
-  box-shadow: 0 5px 0 0 #b8693a, 0 8px 20px rgba(240, 162, 117, 0.3);
+  box-shadow: 0 2px 8px rgba(74, 52, 38, 0.12);
   transition: transform 0.12s ease, box-shadow 0.12s ease, opacity 0.2s ease;
   min-height: 56px;
   cursor: pointer;
 }
-.btn-primary:hover:not(:disabled) { transform: translateY(-2px) scale(1.02); box-shadow: 0 7px 0 0 #b8693a, 0 14px 28px rgba(240, 162, 117, 0.35); }
-.btn-primary:active:not(:disabled) { transform: translateY(4px) scale(0.99); box-shadow: 0 1px 0 0 #b8693a, 0 3px 10px rgba(240, 162, 117, 0.2); }
+.btn-primary:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(74, 52, 38, 0.16); }
+.btn-primary:active:not(:disabled) { transform: translateY(0); box-shadow: 0 1px 4px rgba(74, 52, 38, 0.10); }
 .btn-primary:disabled { opacity: 0.5; }
 
 .btn-coral {
-  background: linear-gradient(135deg, #D98255 0%, #C78A6E 100%);
-  color: #24130D;
-  font-family: 'Nunito', 'DM Sans', sans-serif;
-  font-weight: 800;
+  background: #E89B6F;
+  color: #4A3426;
+  font-weight: 700;
   font-size: 1.0625rem;
   border: none;
   border-radius: 1rem;
   padding: 0.875rem 1.25rem;
-  box-shadow: 0 5px 0 0 #9e5c35, 0 8px 20px rgba(217, 130, 85, 0.3);
+  box-shadow: 0 2px 8px rgba(74, 52, 38, 0.12);
   transition: transform 0.12s ease, box-shadow 0.12s ease;
   min-height: 56px;
   cursor: pointer;
 }
-.btn-coral:hover:not(:disabled) { transform: translateY(-2px) scale(1.02); box-shadow: 0 7px 0 0 #9e5c35, 0 14px 28px rgba(217, 130, 85, 0.35); }
-.btn-coral:active:not(:disabled) { transform: translateY(4px) scale(0.99); box-shadow: 0 1px 0 0 #9e5c35, 0 3px 10px rgba(217, 130, 85, 0.2); }
+.btn-coral:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(74, 52, 38, 0.16); }
+.btn-coral:active:not(:disabled) { transform: translateY(0); box-shadow: 0 1px 4px rgba(74, 52, 38, 0.10); }
 
 .btn-done-early {
-  background: linear-gradient(135deg, #8A9561 0%, #677247 100%);
+  background: #9CAF88;
   color: white;
-  font-family: 'Nunito', 'DM Sans', sans-serif;
-  font-weight: 800;
+  font-weight: 700;
   font-size: 1rem;
   border: none;
   border-radius: 1rem;
   padding: 0.875rem 1.25rem;
-  box-shadow: 0 5px 0 0 #4a5233, 0 10px 24px rgba(103, 114, 71, 0.28);
+  box-shadow: 0 2px 8px rgba(74, 52, 38, 0.12);
   transition: transform 0.12s ease, box-shadow 0.12s ease;
   min-height: 56px;
-  position: relative;
-  overflow: hidden;
   cursor: pointer;
 }
-.btn-done-early::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
-  animation: btn-shimmer 2.5s ease-in-out infinite;
-}
-.btn-done-early:hover:not(:disabled) { transform: translateY(-2px) scale(1.02); box-shadow: 0 7px 0 0 #4a5233, 0 14px 28px rgba(103, 114, 71, 0.32); }
-.btn-done-early:active:not(:disabled) { transform: translateY(4px) scale(0.99); box-shadow: 0 1px 0 0 #4a5233, 0 3px 10px rgba(103, 114, 71, 0.18); }
-
-@keyframes btn-shimmer {
-  0%   { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
-}
+.btn-done-early:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(74, 52, 38, 0.14); }
+.btn-done-early:active:not(:disabled) { transform: translateY(0); box-shadow: 0 1px 4px rgba(74, 52, 38, 0.10); }
 
 /* ── Progress ring impatient pulse ────────── */
 @keyframes pulse-ring {
@@ -104,7 +87,7 @@ button { font-family: inherit; }
 .ring-impatient {
   transform-origin: center;
   animation: pulse-ring 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-  stroke: #B86F56;
+  stroke: #E89B6F;
 }
 
 /* ── Particle burst ───────────────────────── */

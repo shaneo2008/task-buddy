@@ -9,9 +9,12 @@
  */
 
 const KEYS = {
-  routines: 'task-buddy:routines/v1',
-  custom:   'task-buddy:custom-routines/v1',
-  rewards:  'task-buddy:rewards/v1',
+  routines:        'task-buddy:routines/v1',
+  custom:          'task-buddy:custom-routines/v1',
+  rewards:         'task-buddy:rewards/v1',
+  lastBuddy:       'task-buddy:last-buddy',
+  lastRoutine:     'task-buddy:last-routine',
+  hasCompletedRun: 'task-buddy:has-completed-run',
 };
 
 function safeRead(key, fallback) {
@@ -90,4 +93,22 @@ export function markRewardShownLocal(rewardId) {
   const map = readShownRewards();
   map[rewardId] = new Date().toISOString();
   safeWrite(KEYS.rewards, map);
+}
+
+// ── Returning-user fast path ──────────────────────────────────────────
+export function readFastPath() {
+  return {
+    lastBuddy:       safeRead(KEYS.lastBuddy, null),
+    lastRoutine:     safeRead(KEYS.lastRoutine, null),
+    hasCompletedRun: safeRead(KEYS.hasCompletedRun, false),
+  };
+}
+
+export function writeFastPath({ buddy, routine }) {
+  if (buddy)   safeWrite(KEYS.lastBuddy, buddy);
+  if (routine) safeWrite(KEYS.lastRoutine, routine);
+}
+
+export function markCompletedRun() {
+  safeWrite(KEYS.hasCompletedRun, true);
 }
