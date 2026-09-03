@@ -1,6 +1,7 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { createJSONStorage, persist } from 'zustand/middleware';
 import { TASK_LIBRARY, DEFAULT_ROUTINE_TASKS, getTaskByKey } from './taskLibrary';
+import { persistentStorage } from '../platform/storage';
 import {
   readSavedRoutineTasks,
   writeSavedRoutineTasks,
@@ -13,8 +14,8 @@ import {
 /*
  * Routine Timer Store — Zustand state machine.
  * States: setup | idle | hungry | eating | transitioning | complete
- * Persistence: Saved task lists go to localStorage; timer state is persisted
- * via zustand/persist (key: routine-timer-state) for mobile reload recovery.
+ * Persistence: Saved task lists and timer state use the platform storage
+ * adapter for reload and native process-death recovery.
  */
 
 const TASK_COLORS = ['#9D8AAE', '#86A4B3', '#C89A63', '#B86F56', '#81906F', '#B68FA1'];
@@ -239,7 +240,19 @@ export const useRoutineStore = create(
     }),
     {
       name: 'routine-timer-state',
-      partialize: ({ timerInterval, ...rest }) => rest,
+      storage: createJSONStorage(() => persistentStorage),
+      skipHydration: true,
+      merge: (persistedState, currentState) => {
+        const persistedScreen = persistedState?.screen;
+        return {
+          ...currentState,
+          ...persistedState,
+          screen: ['settings', 'parentGate'].includes(persistedScreen)
+            ? 'selection'
+            : (persistedScreen ?? currentState.screen),
+        };
+      },
+      partialize: ({ timerInterval: _timerInterval, ...rest }) => rest,
     }
   )
 );

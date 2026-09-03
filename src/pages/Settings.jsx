@@ -1,9 +1,17 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Settings as SettingsIcon, Plus, Trash2, Save, X } from 'lucide-react';
+import { Capacitor } from '@capacitor/core';
+import { ExternalLink, Plus, Trash2, Save, X } from 'lucide-react';
 import { useRoutineStore } from '../store/useRoutineStore';
+import {
+  readConfiguredRewards,
+  readRewardsEnabled,
+  writeConfiguredRewards,
+  writeRewardsEnabled,
+} from '../store/localStore';
 import defaultRewards from '../data/rewards.json';
 import Logo from '../components/Logo';
+import { openExternalUrl } from '../platform/externalLinks';
 
 const MotionButton = motion.button;
 
@@ -14,28 +22,20 @@ export default function Settings() {
   const [editingId, setEditingId] = useState(null);
   const [editText, setEditText] = useState('');
   const [hasChanges, setHasChanges] = useState(false);
+  const openLink = (url) => {
+    void openExternalUrl(url).catch((error) => {
+      console.error('[task-buddy] external link failed', error);
+    });
+  };
 
   useEffect(() => {
-    const saved = localStorage.getItem('taskbuddy_rewards');
-    if (saved) {
-      try {
-        setRewards(JSON.parse(saved));
-      } catch {
-        setRewards(defaultRewards);
-      }
-    } else {
-      setRewards(defaultRewards);
-    }
-    
-    const enabledSetting = localStorage.getItem('taskbuddy_rewards_enabled');
-    if (enabledSetting !== null) {
-      setRewardsEnabled(enabledSetting === 'true');
-    }
+    setRewards(readConfiguredRewards(defaultRewards));
+    setRewardsEnabled(readRewardsEnabled());
   }, []);
 
   const handleSave = () => {
-    localStorage.setItem('taskbuddy_rewards', JSON.stringify(rewards));
-    localStorage.setItem('taskbuddy_rewards_enabled', rewardsEnabled.toString());
+    writeConfiguredRewards(rewards);
+    writeRewardsEnabled(rewardsEnabled);
     setHasChanges(false);
   };
   
@@ -104,10 +104,10 @@ export default function Settings() {
       {/* Title */}
       <div className="text-center mb-3 px-2 shrink-0 sm:mb-6 sm:px-4">
         <h1 className="text-[1.45rem] leading-tight font-display font-bold text-ink mb-1 sm:text-3xl sm:mb-2">
-          Manage Rewards
+          Parent Area
         </h1>
         <p className="max-w-[18rem] mx-auto text-ink-muted text-[13px] font-body leading-snug sm:max-w-none sm:text-sm sm:leading-normal">
-          Customize the rewards your child can earn after completing tasks
+          Manage rewards and find privacy or support information
         </p>
       </div>
 
@@ -234,25 +234,33 @@ export default function Settings() {
 
       {/* About / Support */}
       <div className="px-2 pt-2 pb-1 shrink-0 border-t border-border-card">
-        <div className="rounded-xl border border-border-card bg-surface-card px-3 py-2 flex items-center gap-2">
-          <a
-            href="https://buymeacoffee.com/hello6y"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-center gap-1.5 flex-1 rounded-xl bg-accent px-3 py-1.5 hover:opacity-90 transition-opacity shadow-soft"
+        <div className="rounded-xl border border-border-card bg-surface-card p-2 grid grid-cols-2 gap-2">
+          <button
+            type="button"
+            onClick={() => openLink('https://www.taskbuddies.app/privacy')}
+            className="flex items-center justify-center gap-1.5 rounded-xl border border-border-card bg-[#FAF3E8] px-3 py-2 hover:bg-surface-card transition-colors"
           >
-            <span className="text-sm leading-none">☕</span>
-            <span className="text-[11px] font-display font-semibold text-ink">Support My Work</span>
-          </a>
-          <a
-            href="https://www.lovou.app/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-center gap-1.5 flex-1 rounded-xl border border-border-card bg-[#FAF3E8] px-3 py-1.5 hover:bg-surface-card transition-colors"
+            <span className="text-[11px] font-display font-semibold text-ink">Privacy</span>
+            <ExternalLink className="w-3 h-3 text-ink-muted" />
+          </button>
+          <button
+            type="button"
+            onClick={() => openLink('https://www.taskbuddies.app/support')}
+            className="flex items-center justify-center gap-1.5 rounded-xl border border-border-card bg-[#FAF3E8] px-3 py-2 hover:bg-surface-card transition-colors"
           >
-            <span className="text-sm leading-none">💛</span>
-            <span className="text-[11px] font-display font-semibold text-ink">Lovou</span>
-          </a>
+            <span className="text-[11px] font-display font-semibold text-ink">Support</span>
+            <ExternalLink className="w-3 h-3 text-ink-muted" />
+          </button>
+          {!Capacitor.isNativePlatform() && (
+            <button
+              type="button"
+              onClick={() => openLink('https://buymeacoffee.com/hello6y')}
+              className="col-span-2 flex items-center justify-center gap-1.5 rounded-xl bg-accent px-3 py-2 hover:opacity-90 transition-opacity shadow-soft"
+            >
+              <span className="text-sm leading-none">☕</span>
+              <span className="text-[11px] font-display font-semibold text-ink">Support My Work</span>
+            </button>
+          )}
         </div>
       </div>
     </div>

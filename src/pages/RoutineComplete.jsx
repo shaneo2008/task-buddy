@@ -2,7 +2,12 @@ import { useEffect, useState, useCallback, useRef } from 'react';
 import { motion as Motion, AnimatePresence } from 'framer-motion';
 import PixelRexCharacter from '../components/rex/PixelRexCharacter';
 import { useRoutineStore } from '../store/useRoutineStore';
-import { readShownRewards, markRewardShownLocal } from '../store/localStore';
+import {
+  markRewardShownLocal,
+  readConfiguredRewards,
+  readRewardsEnabled,
+  readShownRewards,
+} from '../store/localStore';
 import DEFAULT_REWARDS from '../data/rewards.json';
 
 const CONFETTI_COLORS = ['#E89B6F', '#E8C08A', '#9CAF88', '#88BDD4', '#B3A8D8', '#D8C27A', '#D4A8C7', '#8FA8C8'];
@@ -65,23 +70,9 @@ export default function RoutineComplete() {
   const routineBase = routineType?.startsWith('custom:') ? null : routineType;
   const closingLine = (CLOSING_LINES[routineBase] || ((n) => `You did it! ${n} is so happy you finished. ✨`))(characterName);
 
-  // Load rewards from localStorage on mount
   useEffect(() => {
-    const saved = localStorage.getItem('taskbuddy_rewards');
-    if (saved) {
-      try {
-        setRewards(JSON.parse(saved));
-      } catch {
-        setRewards(DEFAULT_REWARDS);
-      }
-    } else {
-      setRewards(DEFAULT_REWARDS);
-    }
-    
-    const enabledSetting = localStorage.getItem('taskbuddy_rewards_enabled');
-    if (enabledSetting !== null) {
-      setRewardsEnabled(enabledSetting === 'true');
-    }
+    setRewards(readConfiguredRewards(DEFAULT_REWARDS));
+    setRewardsEnabled(readRewardsEnabled());
   }, []);
 
   // Pick a reward once rewards are loaded, biased toward unshown.

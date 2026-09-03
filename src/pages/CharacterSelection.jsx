@@ -34,10 +34,11 @@ export default function CharacterSelection() {
           <Logo className="h-8 w-auto" size="small" />
         </div>
         <MotionButton
-          onClick={() => setScreen('settings')}
+          onClick={() => setScreen('parentGate')}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           className="w-10 h-10 rounded-2xl bg-surface border border-border-card shadow-soft flex items-center justify-center hover:bg-surface-card transition-colors"
+          aria-label="Open Parent Area"
         >
           <Settings className="w-5 h-5 text-ink-muted" />
         </MotionButton>

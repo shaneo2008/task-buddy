@@ -5,7 +5,7 @@ A free, offline-friendly routine timer for kids. Pick a buddy, build a routine, 
 ## Stack
 
 - React + Vite
-- Zustand (with `persist` to `localStorage`)
+- Zustand with web `localStorage` and native Capacitor Preferences
 - Tailwind CSS
 - Framer Motion
 - Lucide icons
@@ -25,15 +25,31 @@ npm run build
 npm run preview
 ```
 
+## Native apps
+
+Task Buddies includes Capacitor projects for Android and iOS. Use Node 22 or newer.
+Android builds also require Java 21:
+
+```bash
+nvm use
+npm ci
+npm run check
+npm run cap:sync
+```
+
+See `docs/STORE_RELEASE.md` for native builds, Codemagic signing, store setup, privacy
+declarations, and release QA.
+
 ## Storage
 
-All state is persisted to `localStorage` under these keys:
+Web state is persisted to `localStorage`; native state uses Capacitor Preferences with the
+same keys:
 
 - `task-buddy:routines/v1` — saved task lists for the built-in routines (bedtime, morning, homework)
 - `task-buddy:custom-routines/v1` — user-created custom routines and their tasks
 - `task-buddy:rewards/v1` — which rewards have already been opened (rotates back to oldest once all shown)
 
-Wipe these keys (DevTools → Application → Local Storage) to factory reset.
+Wipe these keys in browser storage or uninstall the native app to factory reset.
 
 ## Rewards
 

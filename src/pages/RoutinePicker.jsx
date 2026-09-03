@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useRoutineStore } from '../store/useRoutineStore';
 import Logo from '../components/Logo';
 
@@ -23,7 +23,6 @@ function getTimeHighlight() {
 
 export default function RoutinePicker() {
   const { setRoutine, setScreen } = useRoutineStore();
-  const routineCount = ROUTINES.length;
   const timeHighlight = getTimeHighlight();
 
   const handleSelect = (type) => {

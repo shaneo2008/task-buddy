@@ -11,7 +11,6 @@ import Logo from '../components/Logo';
 const TASK_COLORS = ['#9D8AAE', '#86A4B3', '#C89A63', '#B86F56', '#81906F', '#B68FA1'];
 const MotionDiv = motion.div;
 const MotionButton = motion.button;
-const MotionP = motion.p;
 
 export default function RoutineSetup() {
   const { tasks, setTasks, startRoutine, routineName, routineType, selectedCharacter, setScreen, saveRoutine, hasSavedRoutine } = useRoutineStore();

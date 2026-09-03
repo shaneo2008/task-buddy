@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Task Buddies</string>
+    <string name="title_activity_main">Task Buddies</string>
+    <string name="package_name">app.taskbuddies</string>
+    <string name="custom_url_scheme">app.taskbuddies</string>
+</resources>
