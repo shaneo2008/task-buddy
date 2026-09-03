@@ -13,7 +13,9 @@ import RoutineSetup from './pages/RoutineSetup';
 import ActivePlayer from './pages/ActivePlayer';
 import RoutineComplete from './pages/RoutineComplete';
 import CustomRoutineList from './pages/CustomRoutineList';
+import ParentGate from './pages/ParentGate';
 import Settings from './pages/Settings';
+import { initializeNativeRuntime } from './platform/nativeRuntime';
 
 const MotionDiv = motion.div;
 
@@ -27,6 +29,8 @@ const pageTransition = {
 export default function App() {
   const screen = useRoutineStore((s) => s.screen);
   const rootRef = useRef(null);
+
+  useEffect(() => initializeNativeRuntime(), []);
 
   useEffect(() => {
     if (typeof window === 'undefined') return undefined;
@@ -77,7 +81,7 @@ export default function App() {
         useRoutineStore.getState().setRoutine(lastRoutine);
       }
     }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   // On unmount: stop the interval but preserve state so the timer can resume on reload.
   useEffect(() => () => {
@@ -87,9 +91,9 @@ export default function App() {
   }, []);
 
   return (
-    <div ref={rootRef} className="relative h-[100dvh] min-h-0 bg-cream-gradient text-ink overflow-hidden">
+    <div ref={rootRef} className="app-viewport relative h-[100dvh] min-h-0 bg-cream-gradient text-ink overflow-hidden">
       <div className="absolute inset-0 bg-cream-glow pointer-events-none" />
-      <div className="relative max-w-md mx-auto flex h-full min-h-0 w-full flex-col px-3 py-2 sm:px-4 sm:py-6">
+      <div className="app-safe-area relative max-w-md mx-auto flex h-full min-h-0 w-full flex-col">
         <AnimatePresence mode="wait">
           {screen === 'selection' && (
             <MotionDiv key="selection" {...pageTransition} className="flex h-full min-h-0 flex-col">
@@ -124,6 +128,11 @@ export default function App() {
           {screen === 'settings' && (
             <MotionDiv key="settings" {...pageTransition} className="flex h-full min-h-0 flex-col">
               <Settings />
+            </MotionDiv>
+          )}
+          {screen === 'parentGate' && (
+            <MotionDiv key="parentGate" {...pageTransition} className="flex h-full min-h-0 flex-col">
+              <ParentGate />
             </MotionDiv>
           )}
         </AnimatePresence>

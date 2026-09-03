@@ -20,6 +20,97 @@ function Spark({ style, size = 24, opacity = 0.55 }) {
 }
 
 const APP_URL = 'https://task-buddy-ten-dun.vercel.app/';
+const SUPPORT_URL = 'https://github.com/shaneo2008/task-buddy/issues/new';
+
+function LegalPage({ title, children }) {
+  return (
+    <div className="relative min-h-screen bg-cream-gradient text-cocoa-text">
+      <div className="fixed inset-0 bg-cream-glow pointer-events-none" aria-hidden="true" />
+      <main className="relative max-w-2xl mx-auto px-5 py-10 sm:py-16">
+        <a href="/" className="inline-flex mb-8" aria-label="Task Buddies home">
+          <img src="/logo.svg" alt="Task Buddies" width="240" height="120" className="w-52" />
+        </a>
+        <article className="glass-card legal-content">
+          <h1 className="font-display font-extrabold text-3xl sm:text-4xl mb-2">{title}</h1>
+          {children}
+        </article>
+        <footer className="mt-8 text-sm opacity-60 flex gap-4">
+          <a href="/privacy">Privacy</a>
+          <a href="/support">Support</a>
+        </footer>
+      </main>
+    </div>
+  );
+}
+
+function PrivacyPage() {
+  return (
+    <LegalPage title="Privacy Policy">
+      <p><strong>Last updated:</strong> September 3, 2026</p>
+      <p>
+        Task Buddies is designed for children and families. The app does not require an account
+        and does not include advertising, analytics, tracking, or in-app purchases.
+      </p>
+      <h2>Information the app handles</h2>
+      <p>
+        Routine choices, custom routines, timer progress, buddy choices, and reward settings are
+        stored on your device. Task Buddies does not send this information to us or to a backend.
+        Your device platform may include app data in its own device backup according to your Apple
+        or Google account settings.
+      </p>
+      <h2>Permissions</h2>
+      <p>
+        The app may ask for notification permission so it can alert you when a routine step ends.
+        Notifications are optional, and denying permission does not prevent the timer from working.
+      </p>
+      <h2>External links</h2>
+      <p>
+        Privacy and support links are available only from the gated Parent Area. Opening a link
+        uses your device browser, where the destination&apos;s privacy practices apply.
+      </p>
+      <h2>Children&apos;s privacy</h2>
+      <p>
+        Task Buddies does not knowingly collect personal information from children. Because the
+        app does not collect or transmit user data, there is no child profile or account to delete.
+        App data can be removed by clearing app storage or uninstalling the app.
+      </p>
+      <h2>Contact</h2>
+      <p>
+        For privacy questions, open a support request without including personal or sensitive
+        information.
+      </p>
+      <a className="legal-link" href={SUPPORT_URL} target="_blank" rel="noopener noreferrer">
+        Open a support request
+      </a>
+    </LegalPage>
+  );
+}
+
+function SupportPage() {
+  return (
+    <LegalPage title="Task Buddies Support">
+      <p>
+        Task Buddies works offline and stores routines and settings on your device. No account is
+        required.
+      </p>
+      <h2>Quick troubleshooting</h2>
+      <ul>
+        <li>If a timer alert does not appear, enable notifications for Task Buddies in device settings.</li>
+        <li>If haptics are unavailable, check device accessibility and vibration settings.</li>
+        <li>Restart the app if a timer screen does not refresh after returning from the background.</li>
+        <li>Uninstalling the app removes locally stored routines and settings.</li>
+      </ul>
+      <h2>Get help</h2>
+      <p>
+        Report a problem using the public issue tracker. Do not include a child&apos;s name,
+        screenshots containing personal information, or other sensitive data.
+      </p>
+      <a className="legal-link" href={SUPPORT_URL} target="_blank" rel="noopener noreferrer">
+        Open a support request
+      </a>
+    </LegalPage>
+  );
+}
 
 /* ── Sprite sheet constants (matches app's PixelRexCharacter) ── */
 const FRAME_SIZE   = 128;
@@ -149,6 +240,10 @@ function BuddyCarousel() {
 }
 
 export default function App() {
+  const path = window.location.pathname.replace(/\/+$/, '') || '/';
+  if (path === '/privacy') return <PrivacyPage />;
+  if (path === '/support') return <SupportPage />;
+
   return (
     <div className="relative min-h-screen bg-cream-gradient text-cocoa-text overflow-x-hidden">
       <div className="fixed inset-0 bg-cream-glow pointer-events-none" aria-hidden="true" />
@@ -266,8 +361,10 @@ export default function App() {
         </a>
 
         {/* ── Footer ── */}
-        <footer className="text-xs text-center opacity-40">
-          Made by Coatfire &nbsp;&middot;&nbsp; taskbuddies.app
+        <footer className="text-xs text-center opacity-50 flex flex-wrap justify-center gap-x-3 gap-y-2">
+          <span>Made by Coatfire &nbsp;&middot;&nbsp; taskbuddies.app</span>
+          <a href="/privacy">Privacy</a>
+          <a href="/support">Support</a>
         </footer>
 
       </main>

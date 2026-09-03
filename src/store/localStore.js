@@ -1,6 +1,8 @@
+import { readStoredJSON, writeStoredJSON } from '../platform/storage';
+
 /**
- * Tiny localStorage helpers for Task Buddy. Replaces all Supabase reads/writes
- * the original Lovou feature relied on.
+ * Persistent storage helpers for Task Buddy. Native builds use Capacitor
+ * Preferences while web builds retain localStorage compatibility.
  *
  * Keys:
  *   task-buddy:routines/v1         { [routineType]: TaskRow[] }
@@ -15,26 +17,16 @@ const KEYS = {
   lastBuddy:       'task-buddy:last-buddy',
   lastRoutine:     'task-buddy:last-routine',
   hasCompletedRun: 'task-buddy:has-completed-run',
+  configuredRewards: 'taskbuddy_rewards',
+  rewardsEnabled: 'taskbuddy_rewards_enabled',
 };
 
 function safeRead(key, fallback) {
-  if (typeof window === 'undefined') return fallback;
-  try {
-    const raw = window.localStorage.getItem(key);
-    if (!raw) return fallback;
-    return JSON.parse(raw);
-  } catch {
-    return fallback;
-  }
+  return readStoredJSON(key, fallback);
 }
 
 function safeWrite(key, value) {
-  if (typeof window === 'undefined') return;
-  try {
-    window.localStorage.setItem(key, JSON.stringify(value));
-  } catch (err) {
-    console.error('[task-buddy] storage write failed', key, err);
-  }
+  writeStoredJSON(key, value);
 }
 
 // ── Saved tasks per built-in routine type ─────────────────────────────
@@ -93,6 +85,23 @@ export function markRewardShownLocal(rewardId) {
   const map = readShownRewards();
   map[rewardId] = new Date().toISOString();
   safeWrite(KEYS.rewards, map);
+}
+
+export function readConfiguredRewards(fallback) {
+  const rewards = safeRead(KEYS.configuredRewards, fallback);
+  return Array.isArray(rewards) ? rewards : fallback;
+}
+
+export function writeConfiguredRewards(rewards) {
+  safeWrite(KEYS.configuredRewards, rewards);
+}
+
+export function readRewardsEnabled() {
+  return safeRead(KEYS.rewardsEnabled, true) !== false;
+}
+
+export function writeRewardsEnabled(enabled) {
+  safeWrite(KEYS.rewardsEnabled, Boolean(enabled));
 }
 
 // ── Returning-user fast path ──────────────────────────────────────────

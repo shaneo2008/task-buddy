@@ -4,7 +4,7 @@ const ACCENT_COLOR = '#E89B6F';
 const MotionCircle = motion.circle;
 const MotionSpan = motion.span;
 
-export default function ProgressRing({ timeLeft, totalTime, themeColor, size = 220, strokeWidth = 12, className = '', children }) {
+export default function ProgressRing({ timeLeft, totalTime, themeColor: _themeColor, size = 220, strokeWidth = 12, className = '', children }) {
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
   const progress = totalTime > 0 ? timeLeft / totalTime : 0;

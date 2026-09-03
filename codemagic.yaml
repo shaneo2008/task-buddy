@@ -1,0 +1,92 @@
+workflows:
+  native-verification:
+    name: Native verification
+    max_build_duration: 120
+    instance_type: mac_mini_m2
+    environment:
+      node: 22.23.2
+      java: 21
+      xcode: latest
+    scripts:
+      - name: Install dependencies
+        script: npm ci
+      - name: Run web checks
+        script: npm run check
+      - name: Sync Capacitor projects
+        script: npm run cap:sync
+      - name: Build Android debug app
+        script: |
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/android/local.properties"
+          cd android
+          ./gradlew lint assembleDebug
+      - name: Build iOS app without signing
+        script: |
+          xcodebuild \
+            -project "$CM_BUILD_DIR/ios/App/App.xcodeproj" \
+            -scheme App \
+            -configuration Debug \
+            -destination "generic/platform=iOS" \
+            CODE_SIGNING_ALLOWED=NO \
+            build
+    artifacts:
+      - android/app/build/outputs/**/*.apk
+      - android/app/build/reports/lint-results-*.html
+      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.app
+      - /tmp/xcodebuild_logs/*.log
+
+  android-release:
+    name: Android signed bundle
+    max_build_duration: 120
+    instance_type: mac_mini_m2
+    environment:
+      node: 22.23.2
+      java: 21
+      android_signing:
+        - task_buddies_upload
+    scripts:
+      - name: Install dependencies
+        script: npm ci
+      - name: Sync Capacitor project
+        script: npm run cap:sync
+      - name: Build signed Android bundle
+        script: |
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/android/local.properties"
+          cd android
+          ./gradlew lint bundleRelease
+    artifacts:
+      - android/app/build/outputs/**/*.aab
+      - android/app/build/reports/lint-results-*.html
+
+  ios-release:
+    name: iOS signed archive
+    max_build_duration: 120
+    instance_type: mac_mini_m2
+    integrations:
+      app_store_connect: task_buddies_app_store_connect
+    environment:
+      node: 22.23.2
+      java: 21
+      xcode: latest
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: app.taskbuddies
+    scripts:
+      - name: Install dependencies
+        script: npm ci
+      - name: Sync Capacitor project
+        script: npm run cap:sync
+      - name: Set build number
+        script: |
+          cd ios/App
+          agvtool new-version -all "$BUILD_NUMBER"
+      - name: Apply signing profiles
+        script: xcode-project use-profiles --project ios/App/App.xcodeproj
+      - name: Build signed IPA
+        script: |
+          xcode-project build-ipa \
+            --project ios/App/App.xcodeproj \
+            --scheme App
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
